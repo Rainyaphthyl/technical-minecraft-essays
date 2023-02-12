@@ -65,7 +65,7 @@ $$S_1 = \frac{1}{L}$$
 $$S = M\cdot S_1 = \frac{M}{L}$$
 
 在使用该公式时，需要注意时间单位的对应。如果采用常用单位，则需要使用以下换算后的公式：
-$$刷怪效率\mathrm{(mob/h)} = \frac{刷怪上限\mathrm{(mob)} \times 72000}{存活时间\mathrm{(gt)}}$$
+$$刷怪效率\mathrm{(mob/h)} = \frac{刷怪上限\mathrm{(mob)} \times 72000\mathrm{(gt/h)}}{存活时间\mathrm{(gt)}}$$
 
 ## 搬瓜率的预测
 
