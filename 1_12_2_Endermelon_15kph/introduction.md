@@ -80,7 +80,7 @@ $$刷怪效率\mathrm{(mob/h)} = \frac{刷怪上限\mathrm{(mob)} \times 72000\m
 - 有效瓜体积：$V$，在有瓜的部分，末影人可以搬起的瓜的总体积
 - 有效瓜密度：$\mu$，在有瓜的部分，末影人可以搬起的瓜的体积占可搬区域体积的比例
 - 搬瓜AI执行概率：$\varepsilon$，见下文
-- 搬瓜AI创建概率：$\alpha$，见下文
+- 搬瓜AI创建概率：$\varepsilon _0$，见下文
 - 瞬时搬瓜概率：$p$，给定任意一只空手的末影人和某一gt，在该gt搬起瓜的概率；可考虑等效平均值
 - 总搬瓜率：$G$，（上文已介绍）给定任意一只末影人，在其完整生命周期内搬走西瓜的概率
 
@@ -89,10 +89,10 @@ $$刷怪效率\mathrm{(mob/h)} = \frac{刷怪上限\mathrm{(mob)} \times 72000\m
 ### **末影人搬瓜尝试**
 
 平均意义上，末影人每gt以 $\varepsilon$ 的概率尝试搬瓜，其中涉及AI任务创建与执行的概率。对于1.12.2，数据如下：
-$$\alpha = \frac{1}{20}$$
-$$\varepsilon = \frac{\alpha+\alpha^2+\alpha^3}{3} = \frac{421}{24000} \approx \frac{1}{57} \approx 0.01754$$
+$$\varepsilon _0 = \frac{1}{20}$$
+$$\varepsilon = \frac{\varepsilon _0+\varepsilon _0^2+\varepsilon _0^3}{3} = \frac{421}{24000} \approx \frac{1}{57} \approx 0.01754$$
 
-需要注意，在1.12.2，尝试搬瓜的平均概率并不是 $\alpha = 1/20$，而是 $\varepsilon \approx 1/57$，这与1.14+有所区别。
+需要注意，在1.12.2，尝试搬瓜的平均概率并不是 $\varepsilon_0 = 1/20$，而是 $\varepsilon \approx 1/57$，这与1.14+有所区别。
 
 在实际的细节上，各个gt的尝试搬瓜的概率不是相同的，而是以3gt为周期变化，$1/57$只是平均值。但在不考虑离散情况优化的条件下，可以用平均值来指导设计。
 
@@ -201,17 +201,25 @@ $$m = S\cdot G$$
 $$S = S\left(w,r\right) = \frac{C}{w + r + t_d}$$
 $$G = G\left(w,V\right) = 1 - \left(1 - \varepsilon\cdot\frac{V}{V_A}\right)^w$$
 
+# **参数选取与结构设计**
+
+$$m\left(w, r, V\right) = \frac{C}{w + r + t_d} \cdot \left(
+    1 - \left(1 - \varepsilon\cdot\frac{V}{V_A}\right)^w
+\right)$$
+
+## **产瓜效率公式分析**
+
+对上文得到的公式 $m\left(w, r, V\right) = S\left(w,r\right)\cdot G\left(w,V\right)$ 作进一步分析。
+
 三个参数的可能取值不会超过以下范围：
 $$
 w\in\left[0, +\infty\right),
 r\in\left[0, +\infty\right),
 V\in\left[0, V_A\right]
 $$
-实际可能的取值范围小于上述范围。例如，对于 $V$，由于结构的限制，实际上无法取到 $V_A$；必然有 $V < V_A$ 。
+实际可能的取值范围小于上述范围。例如，对于 $V$ ，由于结构的限制，实际上无法取到 $V_A$ ，必然有 $V < V_A$ 。
 
-$w, r, V$是互相独立的变量，考虑 $m$ 随三个参数变化的关系：
-$$\frac{\partial m}{\partial w} = $$
-
+$w, r, V$ 是互相独立的变量，考虑 $m$ 随各个参数变化的关系：
 $$\frac{\partial m}{\partial r}
 = G\cdot\frac{\partial S}{\partial r}
 = G\cdot\frac{-C}{\left(w + r + t_d\right)^2}$$
@@ -219,10 +227,57 @@ $$\frac{\partial m}{\partial r}
 $$\frac{\partial m}{\partial V} = S\cdot\frac{\partial G}{\partial V}
 = w\cdot\frac{\varepsilon}{V_A}\cdot\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^{w-1}\cdot S$$
 
-$$1 - \left(1 - \varepsilon\cdot\frac{V}{V_A}\right)^w=1 - \left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w
-= 1 - \mathrm{e}^{w\cdot \ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)}}$$
+经过简单分析可以发现，在其他条件不变的情况下，$m$ 随 $r, V$ 的变化都是单调的。
 
-# **参数选取与结构设计**
+对于闲置时间 $r$ ，
+$$G\left(w,V\right) > 0; C = 70 > 0\\
+\frac{\partial m}{\partial r}
+= G\left(w,V\right)\cdot\frac{-C}{\left(w + r + t_d\right)^2} < 0$$
+$m$ 随 $r$ 单调减少。
+
+对于有效瓜体积 $V$ ，
+$$\frac{V}{V_A}\cdot\varepsilon < \frac{V_A}{V_A}\cdot 1 = 1\\
+1 - V\cdot\frac{\varepsilon}{V_A} > 1 - 1 = 0\\
+\frac{\partial m}{\partial V}
+= \frac{\varepsilon w\cdot S\left(w,r\right)}{V_A}\cdot\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^{w-1} > 0$$
+$m$ 随 $V$ 单调增加。
+
+这两个结论都是显然、符合直觉、容易想到的。在设计过程中，要想达到尽可能高的总效率，就需要尽可能地增大有效瓜体积（瓜密度）、减小闲置时间，而不需要考虑这两个参数的平衡。
+
+因此，参数 $r, V$ 可以被视作关键的技术瓶颈，是决定瓜机总效率的根本参数，对这一部分的优化是游戏内结构设计工作的最核心环节。
+
+与另外两个参数不同，工作时间参数 $w$ 对 $m$ 的影响不是单调的，我们需要研究其极值点。对于本文的游戏外理论分析，需要在给定任意 $r, V$ 取值的条件下给出 $w$ 的最佳取值。
+
+$w$ 对 $m$ 的影响关系：
+$$\frac{\partial m}{\partial w}
+= \frac{\partial S}{\partial w}\cdot G + \frac{\partial G}{\partial w}\cdot S$$
+
+其中，各因子体现为：
+$$\frac{\partial S}{\partial w}
+= \frac{-C}{\left(w + r + t_d\right)^2} < 0$$
+
+$$\frac{\partial G}{\partial w}
+= -w\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\cdot\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)}\\
+\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)} < 0;
+\frac{\partial G}{\partial w} > 0$$
+
+这两个分量分别描述了工作时间（或存活时间）的变化对刷怪速率、搬瓜率造成的互相抑制的影响。两者总计的影响为：
+$$\frac{\partial m}{\partial w}
+= -\frac{Cw}{w + r + t_d}\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\cdot\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)}\\
+- \frac{C}{\left(w + r + t_d\right)^2}\left(1 - \left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\right)$$
+
+简记以下中间变量：
+$$\alpha = \alpha\left(V\right)
+= 1 - p = 1 - V\cdot\frac{\varepsilon}{V_A}\\
+\beta = \beta\left(r\right) = r + t_d$$
+
+则公式重新表述为：
+$$\frac{\partial m}{\partial w}
+= \frac{C}{w + \beta}
+\left(
+    w\alpha^w\ln{\frac{1}{\alpha}}
+    - \frac{1 - \alpha^w}{w + \beta}
+\right)$$
 
 # 相关资料
 
