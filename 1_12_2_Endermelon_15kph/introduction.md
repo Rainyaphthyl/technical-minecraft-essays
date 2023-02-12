@@ -274,14 +274,14 @@ $$\frac{\partial S}{\partial w}
 = \frac{-C}{\left(w + r + t_d\right)^2} < 0$$
 
 $$\frac{\partial G}{\partial w}
-= -w\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\cdot\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)};\\
+= -\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\cdot\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)};\\
 \ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)} < 0;
 \frac{\partial G}{\partial w} > 0$$
 
 这两个分量分别描述了工作时间（或存活时间）的变化对刷怪速率、搬瓜率造成的互相抑制的影响。两者总计的影响为：
 
 $$\frac{\partial m}{\partial w}
-= -\frac{Cw}{w + r + t_d}\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\cdot\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)}\\
+= -\frac{C}{w + r + t_d}\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\cdot\ln{\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)}\\
 -\frac{C}{\left(w + r + t_d\right)^2}\left(1 - \left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^w\right)
 $$
 
@@ -293,10 +293,12 @@ $$\alpha = \alpha\left(V\right)
 
 则公式重新表述为：
 
+$$m = \frac{C\left(1 - \alpha^w\right)}{w + \beta}$$
+
 $$\frac{\partial m}{\partial w}
 = \frac{C}{w + \beta}
 \left(
-    w\alpha^w\ln{\frac{1}{\alpha}}
+    \alpha^w\ln{\frac{1}{\alpha}}
     - \frac{1 - \alpha^w}{w + \beta}
 \right)$$
 
