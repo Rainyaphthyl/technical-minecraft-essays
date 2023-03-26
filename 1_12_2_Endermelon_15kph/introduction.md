@@ -103,7 +103,7 @@ $$V_A = 4.0 \times 3.0 \times 4.0 = 48.0$$
 
 在下文中，以角标 $e, b, c$ 分别表示普通实体坐标、方块坐标、方块中心实体坐标。
 
-在$A$区域内，末影人以按体积均匀分布的概率随机抽取一个实体坐标，记作：
+在 $A$ 区域内，末影人以按体积均匀分布的概率随机抽取一个实体坐标，记作：
 $$Q_e = \left(Q_e.x, Q_e.y, Q_e.z\right)$$
 
 $Q_e$所在的方块坐标为：
@@ -238,7 +238,7 @@ $$\frac{\partial m}{\partial r}
 $$\frac{\partial m}{\partial V} = S\cdot\frac{\partial G}{\partial V}
 = w\cdot\frac{\varepsilon}{V_A}\cdot\left(1 - V\cdot\frac{\varepsilon}{V_A}\right)^{w-1}\cdot S$$
 
-经过简单分析可以发现，在其他条件不变的情况下，$m$ 随 $r, V$ 的变化都是单调的。
+经过简单分析可以发现，在其他条件不变的情况下， $m$ 随 $r, V$ 的变化都是单调的。
 
 对于闲置时间 $r$ ，
 
