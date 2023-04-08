@@ -35,7 +35,7 @@
 
 树苗经过恰好 $n$ 次催熟时成功转化，意味着前 $\left(n-1\right)$ 次过程全部转化失败，第 $n$ 次过程转化成功。此过程显然必须满足 $n \geq 1$ ，由此很容易得出以下概率分布表达式：
 
-$$ b\left(n\right) = P\left(\xi = n\right) = \left(1 - \alpha\beta\right)^{n-1}\cdot \alpha\beta, \left(n \in \mathbb{N}^{+}\right) $$
+$$ b\left(n\right) = P\left\lbrace\xi = n\right\rbrace = \left(1 - \alpha\beta\right)^{n-1}\cdot \alpha\beta, \left(n \in \mathbb{N}^{+}\right) $$
 
 不加证明地给出以下引理：
 
@@ -53,13 +53,13 @@ $$ \sigma\left(\xi\right) = \sqrt{D\left(\xi\right)} = \frac{\sqrt{1 - \alpha\be
 
 对于横截面为 $1\times1$ 的树木类型，其预催熟与生成的过程必然发生在同一个树苗上。将单树苗的两次转化过程组合起来，考虑其催熟过程的概率模型。
 
-考虑骨粉使用 $n$ 次的情况，将各个「使用骨粉」的事件 $B_i \left(i \in \left\{1, 2, \dots, n\right\} \right)$ 划分为两个序列，每个序列的最后一个事件表示转化成功的情况，分别表示两次转化的全过程，并记 $n = n_1 + n_2$ ，其中 $n_i$ 表示第 $i$ 次转化过程的骨粉消耗量。
+考虑骨粉使用 $n$ 次的情况，将各个「使用骨粉」的事件 $B_i \left(i \in \left\lbrace1, 2, \dots, n\right\rbrace \right)$ 划分为两个序列，每个序列的最后一个事件表示转化成功的情况，分别表示两次转化的全过程，并记 $n = n_1 + n_2$ ，其中 $n_i$ 表示第 $i$ 次转化过程的骨粉消耗量。
 
 此时， $B_n$ 必然是唯一的树木成功生成的事件；树苗预催熟成功的事件可能是 $B_m \left(1 \leq m = n_1 \leq n - 1\right)$ 中的任意一个。事件 $B_m$ 将催熟过程分为两部分，其生长尝试成功率 $\beta_i$ 有所变化。
 
 将两次转化过程的骨粉消耗量分别记为随机变量 ${\xi}_1, {\xi}_2$ ， $\xi = {\xi}_1 + {\xi}_2$ ，
 
-$$ P\left(\xi = n\right) = \sum_{k=1}^{n-1}{P\left({\xi}_1 = k\right)\cdot P\left({\xi}_2 = n - k\right)} \\
+$$ P\left\lbrace\xi = n\right\rbrace = \sum_{k=1}^{n-1}{P\left\lbrace{\xi}_1 = k\right\rbrace\cdot P\left\lbrace{\xi}_2 = n - k\right\rbrace} \\
 = \sum_{k=1}^{n-1}{\left(1 - \alpha \beta _1\right)^{k-1}\cdot \alpha \beta _1 \cdot \left(1 - \alpha \beta _2\right)^{n-k-1}\cdot \alpha \beta _2} \\
 = \alpha ^2 \beta _1 \beta _2 \left(1 - \alpha \beta _2\right)^{n-2} \cdot \sum_{k=1}^{n-1}{\left(\frac{1 - \alpha \beta _1}{1 - \alpha \beta _2}\right)^{k-1}} $$
 
@@ -67,12 +67,12 @@ $$ P\left(\xi = n\right) = \sum_{k=1}^{n-1}{P\left({\xi}_1 = k\right)\cdot P\lef
 
 考虑实际情况，可以取 $\beta _1 = 1$ ，记 $\beta _2 = \beta$ ，则上式变为：
 
-$$ P\left(\xi = n\right) 
+$$ P\left\lbrace\xi = n\right\rbrace 
 = \alpha ^2 \beta \left(1 - \alpha\beta\right)^{n-2} \cdot \sum_{k=1}^{n-1}{\left(\frac{1 - \alpha}{1 - \alpha \beta}\right)^{k-1}} $$
 
 继续化简得到以下结论：
 
-$$ P\left(\xi = n\right) =
+$$ P\left\lbrace\xi = n\right\rbrace =
 \begin{cases}
 \alpha^2\left(n-1\right)\left(1-\alpha\right)^{n-2}, \space \beta = 1 \\
 \frac{\alpha\beta}{1-\beta}\cdot\left(\left(1-\alpha\beta\right)^{n-1} - \left(1-\alpha\right)^{n-1}\right), \space 0 \leq \beta < 1
