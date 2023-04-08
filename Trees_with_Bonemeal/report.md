@@ -35,7 +35,7 @@
 
 树苗经过恰好 $n$ 次催熟时成功转化，意味着前 $\left(n-1\right)$ 次过程全部转化失败，第 $n$ 次过程转化成功。此过程显然必须满足 $n \geq 1$ ，由此很容易得出以下概率分布表达式：
 
-$$ b\left(n\right) = P\left\{\xi = n\right\} = \left(1 - \alpha\beta\right)^{n-1}\cdot \alpha\beta, \left(n \in \mathbb{N}^{+}\right) $$
+$$ b\left(n\right) = P\left(\xi = n\right) = \left(1 - \alpha\beta\right)^{n-1}\cdot \alpha\beta, \left(n \in \mathbb{N}^{+}\right) $$
 
 不加证明地给出以下引理：
 
@@ -59,15 +59,26 @@ $$ \sigma\left(\xi\right) = \sqrt{D\left(\xi\right)} = \frac{\sqrt{1 - \alpha\be
 
 将两次转化过程的骨粉消耗量分别记为随机变量 ${\xi}_1, {\xi}_2$ ， $\xi = {\xi}_1 + {\xi}_2$ ，
 
-$$ P\left\{\xi = n\right\} = \sum_{m=1}^{n-1}{P\left\{{\xi}_1 = m\right\}\cdot P\left\{{\xi}_2 = n - m\right\}} $$
-
-$$ P\left\{\xi = n\right\} = \sum_{m=1}^{n-1}{\left(1 - \alpha \beta _1\right)^{m-1}\cdot \alpha \beta _1 \cdot \left(1 - \alpha \beta _2\right)^{n-m-1}\cdot \alpha \beta _2} $$
+$$ P\left(\xi = n\right) = \sum_{k=1}^{n-1}{P\left({\xi}_1 = k\right)\cdot P\left({\xi}_2 = n - k\right)} \\
+= \sum_{k=1}^{n-1}{\left(1 - \alpha \beta _1\right)^{k-1}\cdot \alpha \beta _1 \cdot \left(1 - \alpha \beta _2\right)^{n-k-1}\cdot \alpha \beta _2} \\
+= \alpha ^2 \beta _1 \beta _2 \left(1 - \alpha \beta _2\right)^{n-2} \cdot \sum_{k=1}^{n-1}{\left(\frac{1 - \alpha \beta _1}{1 - \alpha \beta _2}\right)^{k-1}} $$
 
 其中 $n \in \mathbb{N}^+ \wedge n \geq 2$ 。
 
-当 $\beta _2 = \beta _1 = 1$ ，即不存在限高等限制生长尝试的因素时，上述结论退化为：
- 
-$$ P\left\{\xi = n\right\} = \alpha ^2 \left(n-1\right)\left(1 - \alpha\right)^{n-2} $$
+考虑实际情况，可以取 $\beta _1 = 1$ ，记 $\beta _2 = \beta$ ，则上式变为：
+
+$$ P\left(\xi = n\right) 
+= \alpha ^2 \beta \left(1 - \alpha\beta\right)^{n-2} \cdot \sum_{k=1}^{n-1}{\left(\frac{1 - \alpha}{1 - \alpha \beta}\right)^{k-1}} $$
+
+继续化简得到以下结论：
+
+$$ P\left(\xi = n\right) =
+\begin{cases}
+\alpha^2\left(n-1\right)\left(1-\alpha\right)^{n-2}, \space \beta = 1 \\
+\frac{\alpha\beta}{1-\beta}\cdot\left(\left(1-\alpha\beta\right)^{n-1} - \left(1-\alpha\right)^{n-1}\right), \space 0 \leq \beta < 1
+\end{cases} $$
+
+## **四树苗催熟过程的概率模型**
 
 # **含时的树苗催熟速率**
 
