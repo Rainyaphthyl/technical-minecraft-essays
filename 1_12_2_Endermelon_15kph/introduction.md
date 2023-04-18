@@ -211,13 +211,13 @@ $$G = G\left(w,V\right) = 1 - \left(1 - \varepsilon\cdot\frac{V}{V_A}\right)^w$$
 
 # **参数选取与结构设计**
 
-$$m\left(w, r, V\right) = \frac{C}{w + r + t_d} \cdot \left(
-    1 - \left(1 - \varepsilon\cdot\frac{V}{V_A}\right)^w
-\right)$$
-
 ## **产瓜效率公式分析**
 
 对上文得到的公式 $m\left(w, r, V\right) = S\left(w,r\right)\cdot G\left(w,V\right)$ 作进一步分析。
+
+$$m\left(w, r, V\right) = \frac{C}{w + r + t_d} \cdot \left(
+    1 - \left(1 - \varepsilon\cdot\frac{V}{V_A}\right)^w
+\right)$$
 
 三个参数的可能取值不会超过以下范围：
 
