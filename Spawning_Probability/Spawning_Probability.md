@@ -177,6 +177,8 @@ $$ \phi\left(\vec{r}\right)
 
 ### **具体计算**
 
+#### 前提介绍：
+
 整理上述简化的表达式，可以得到以下迭代函数（忽略迭代路径不会到达的情况）：
 
 $$ a\left(\vec{r}, k\right)
@@ -194,7 +196,7 @@ $$ a\left(\vec{r}, k\right)
 0 &, k > \beta \\
 \end{cases} $$
 
-在1.12.2中，可以直接认定游走次数的取值范围：$\alpha = 1,\space \beta = 4$ ；该参数的具体讲解和跨版本注意事项需参阅后文。
+在1.12.2中，可以直接认定游走次数的取值范围： $\alpha = 1,\space \beta = 4$ ；该参数的具体讲解和跨版本注意事项需参阅后文。
 
 为完成上述计算，需要给出 $\phi\left(\vec{r}\right)$ 和 $g\left(\vec{\rho}\right)$ 的实现方式。
 
@@ -221,6 +223,41 @@ $$ h\left(\vec{r}\right)
 例如，假设一个区块的最高遮光方块高度为 $30$ ，则其最高可刷怪高度为 $31$ ，由于 $31 \in \left[16, 31\right]$ ，所以此高度位于第 $2$ 个区段， $h = 2 \times 16 = 32$ 。
 
 在实际运行中，刷怪高度选取的范围是 $\left[0, h-1\right] \cap \mathbb{Z}$ ，恰好有 $h$ 种可能的取值。
+
+#### $g\left(\vec{\rho}\right)$ 的计算：
+
+$g\left(\vec{\rho}\right)$ 本质上是与 $\left(x, z\right)$ 有关的二元函数，但其中的两个坐标轴对概率的影响是互相独立的，因此可以在一维坐标的环境下分别考虑变量 $A_k = \left(X_k, Z_k\right)$ 的分布。下面以 $X_k$ 为例：
+
+考虑游走范围的位置相对性，此处关心的变量其实是 $X = X_k - X_{k+1}$ 对刷怪机制进行简单分析，不难得出一个众所周知的规律： $X$ 并不是均匀分布的，而是两个独立的（离散型）均匀分布的线性叠加。具体表现如下：
+
+$$ X = X_P - X_N;\space X_P \sim U\left[0, 5\right];\space X_N \sim U\left[0, 5\right] $$
+
+将游走半径记作  $\lambda = 6$ 。分布情况如下：
+
+$$ P\left\lbrace X = t \right\rbrace
+= \frac{\lambda - \left|t\right|}{\lambda ^2} ;\space \left(-\lambda < t < \lambda\right) \wedge \left(t\in\mathbb{Z}\right) $$
+
+$Z$ 方向的分布有类似的规律：
+
+$$ P\left\lbrace Z = t \right\rbrace
+= \frac{\lambda - \left|t\right|}{\lambda ^2} ;\space \left(-\lambda < t < \lambda\right) \wedge \left(t\in\mathbb{Z}\right) $$
+
+将两者结合起来，可以得到 $g\left(\vec{\rho}\right)$ 的表达式：
+
+$$ g\left(\vec{\rho}\right)
+= g\left(x, z\right)
+= P\left\lbrace X = x \right\rbrace \cdot P\left\lbrace Z = z \right\rbrace $$
+
+$$ g\left(\vec{\rho}\right)
+= \frac{\left(\lambda - \left|x\right|\right)
+\left(\lambda - \left|z\right|\right)}{\lambda ^4}
+= \frac{\left(6 - \left|x\right|\right)
+\left(6 - \left|z\right|\right)}{1296}
+;\space \left(\vec{\rho} \in \delta _0\right) $$
+
+#### 总论：
+
+WIP
 
 # 相关资料
 
