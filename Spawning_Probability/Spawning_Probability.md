@@ -99,10 +99,10 @@ $$ P\left\lbrace \vec{A}_i = \vec{r}_i \right\rbrace \\
 
 其中， $1 \leq i \leq \beta$ ，并且 $\left[\alpha, \beta\right] \cap \mathbb{N}$ 是 $B$ 的可能取值范围，即：
 
-$$ P\left\lbrace B = b \right\rbrace
+$$ P\left\lbrace B = n \right\rbrace
 = \begin{cases}
-\frac{1}{\beta -\alpha +1} &, b \in D_B = \left[\alpha, \beta\right] \cap \mathbb{N} \\
-0 &, b \notin D_B
+\frac{1}{\beta -\alpha +1} &, \left(\alpha \leq n \leq \beta\right) \cap \left(b \in\mathbb{N}^+\right) \\
+0 &, \text{else}
 \end{cases} $$
 
 $\alpha, \beta$ 是与生物群系和生成列表有关的变量，因此本节暂不追问。
@@ -116,6 +116,13 @@ $$ P\left\lbrace \vec{A}_\beta = \vec{r}_\beta \right\rbrace
 上述公式暗示了以下事实：
 
 $$ \left(\forall{k}\right), k > \beta \to P\left\lbrace \vec{A}_k = \vec{r}_k \right\rbrace = 0 $$
+
+如果采用更严谨的描述方式，应该定义两个随机变量：剩余游走次数 $K$ 和 游走起点位置 $\vec{A}$ ，上述事实的实际含义为：
+
+$$ \left(\forall{k}\right), k > \beta \to P\left\lbrace \left(\vec{A} = \vec{r}\right) \cap \left(K = k\right) \right\rbrace 
+= P\left\lbrace K = k \right\rbrace = 0 $$
+
+即剩余游走次数不可能大于 $\beta$ ，此时对于游走位置的讨论无意义。
 
 ### **游走迭代公式的简化**
 
@@ -223,6 +230,14 @@ $$ h\left(\vec{r}\right)
 例如，假设一个区块的最高遮光方块高度为 $30$ ，则其最高可刷怪高度为 $31$ ，由于 $31 \in \left[16, 31\right]$ ，所以此高度位于第 $2$ 个区段， $h = 2 \times 16 = 32$ 。
 
 在实际运行中，刷怪高度选取的范围是 $\left[0, h-1\right] \cap \mathbb{Z}$ ，恰好有 $h$ 种可能的取值。
+
+实际计算方法可以总结为：
+
+$$ \phi\left(\vec{r}\right) = \left(4096\cdot
+\left\lceil\frac{1}{16}
+\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
+    y_m\left(\vec{\omega}\right)
+\right\rbrace + 2\right)\right\rceil\right)^{-1}$$
 
 #### $g\left(\vec{\rho}\right)$ 的计算：
 
