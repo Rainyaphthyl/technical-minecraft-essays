@@ -52,13 +52,13 @@ $$ P\left\lbrace \vec{S} = \left(x_0, z_0\right) \right\rbrace,
 
 $$ P\left\lbrace \vec{S} = \vec{r}_0 \right\rbrace 
 = \sum_{\vec{r}_1 \in \delta\left(\vec{r}_0 \right)} {\left(
-    P\left\lbrace \vec{S} = \vec{r}_0 \mid
+    P\left\lbrace \vec{S} = \vec{r}_0 \space | \space
     \vec{A}_1 = \vec{r}_1 \right\rbrace \cdot P\left\lbrace \vec{A}_1 = \vec{r}_1 \right\rbrace
 \right)} $$
 
 其中， $\delta\left(\vec{r}_i\right)$ 表示可能以 $\vec{r}_i$ 为终点的全部单次游走起点的集合，实际定义为以 $\vec{r}_i$ 为中心的 $11 \times 11$ 正方形空间（ $11 = 5 + 1 + 5$ ），粗略描述如下：
 
-$$ \delta\left(\vec{r}_i\right) = \left\lbrace \vec{r}_j \mid
+$$ \delta\left(\vec{r}_i\right) = \left\lbrace \vec{r}_j \space | \space
 \left(\vec{r}_j - \vec{r}_i\right) \in
 \left(\left[-5, +5\right]^2 \cap \mathbb{Z}^2\right) \right\rbrace $$
 
@@ -91,7 +91,7 @@ $$ \delta\left(\vec{r}_i\right) = \left\lbrace
 
 $$ P\left\lbrace \vec{A}_i = \vec{r}_i \right\rbrace \\
 = \sum_{\vec{r} \in \delta\left(\vec{r}_i\right)} {\left(
-    P\left\lbrace \vec{A}_i = \vec{r}_i \mid \vec{A}_{i+1} = \vec{r} \right\rbrace
+    P\left\lbrace \vec{A}_i = \vec{r}_i \space | \space \vec{A}_{i+1} = \vec{r} \right\rbrace
     \cdot P\left\lbrace \vec{A}_{i+1} = \vec{r} \right\rbrace
 \right)} \\
 + P\left\lbrace \vec{I} = \vec{r}_i \right\rbrace
@@ -118,15 +118,15 @@ $$ P\left\lbrace \vec{A}_\beta = \vec{r}_\beta \right\rbrace
 注意到上述表达式中的可重复部分，定义以下简化的表达式：
 
 $$ g\left(\vec{\rho}\right)
-= P\left\lbrace \vec{A}_k = \vec{0} \mid \vec{A}_{k+1} = \vec{\rho} \right\rbrace $$
+= P\left\lbrace \vec{A}_k = \vec{0} \space | \space \vec{A}_{k+1} = \vec{\rho} \right\rbrace $$
 
 可以这样解释 $g\left(\vec{\rho}\right)$ 的定义：
 1. 考虑刷怪游走的机制，在相应取值范围内， $g\left(\vec{\rho}\right)$ 是一个与剩余游走次数 $k$ 无关的函数。
 2. 又考虑到 $\vec{r}_{k+1}$ 与 $\delta\left(\vec{r}_k\right)$ 实际上具有固定的相对位置关系，可以将两者之差用单一的变量 $\vec{\rho} = \vec{r}_{k+1} - \vec{r}_k$ 来表示，即： $g\left(\vec{\rho}\right)$ 的返回值仅与两个坐标的相对位置有关，而与绝对位置无关：
 
 $$ \forall{\vec{r}_1}, \forall{\vec{r}_2},
-P\left\lbrace \vec{A}_k = \vec{r}_1 \mid \vec{A}_{k+1} = \vec{r}_1 + \vec{\rho} \right\rbrace
-= P\left\lbrace \vec{A}_k = \vec{r}_2 \mid \vec{A}_{k+1} = \vec{r}_2 + \vec{\rho} \right\rbrace $$
+P\left\lbrace \vec{A}_k = \vec{r}_1 \space | \space \vec{A}_{k+1} = \vec{r}_1 + \vec{\rho} \right\rbrace
+= P\left\lbrace \vec{A}_k = \vec{r}_2 \space | \space \vec{A}_{k+1} = \vec{r}_2 + \vec{\rho} \right\rbrace $$
 
 同时， $\delta\left(\vec{0}\right)$ 的值显然是常量：
 
