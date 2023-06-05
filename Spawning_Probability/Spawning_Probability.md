@@ -97,15 +97,15 @@ $$ P\left\lbrace \vec{A}_i = \vec{r}_i \right\rbrace \\
 + P\left\lbrace \vec{I} = \vec{r}_i \right\rbrace
 \cdot P\left\lbrace B = i \right\rbrace $$
 
-其中， $1 \leq i < \beta$ ，并且 $\left[1, \beta\right] \cap \mathbb{N}$ 是 $B$ 的可能取值范围，即：
+其中， $1 \leq i \leq \beta$ ，并且 $\left[\alpha, \beta\right] \cap \mathbb{N}$ 是 $B$ 的可能取值范围，即：
 
 $$ P\left\lbrace B = b \right\rbrace
 = \begin{cases}
-\frac{1}{\beta}, \space b \in D_B = \left[1, \beta\right] \cap \mathbb{N} \\
-0, \space b \notin D_B
+\frac{1}{\beta -\alpha +1} &, b \in D_B = \left[\alpha, \beta\right] \cap \mathbb{N} \\
+0 &, b \notin D_B
 \end{cases} $$
 
-$\beta$ 是与生物群系和生成列表有关的变量，因此本节暂不追问。
+$\alpha, \beta$ 是与生物群系和生成列表有关的变量，因此本节暂不追问。
 
 对于最大可能游走次数对应的初始位置，有以下表达式：
 
@@ -113,7 +113,11 @@ $$ P\left\lbrace \vec{A}_\beta = \vec{r}_\beta \right\rbrace
 = 0 + P\left\lbrace \vec{I} = \vec{r}_\beta \right\rbrace
 \cdot P\left\lbrace B = \beta \right\rbrace $$
 
-### **游走迭代公式的计算**
+上述公式暗示了以下事实：
+
+$$ \left(\forall{k}\right), k > \beta \to P\left\lbrace \vec{A}_k = \vec{r}_k \right\rbrace = 0 $$
+
+### **游走迭代公式的简化**
 
 注意到上述表达式中的可重复部分，定义以下简化的表达式：
 
@@ -140,6 +144,83 @@ $$ f\left(\vec{r}_k, k\right)
     g\left(\vec{\rho}\right)
     \cdot P\left\lbrace \vec{A}_{k+1} = \vec{r}_k + \vec{\rho} \right\rbrace
 \right)} $$
+
+代入 $B$ 的分布情况之后，完整的迭代公式表示为以下形式：
+
+$$ P\left\lbrace \vec{A}_k = \vec{r} \right\rbrace
+= \begin{cases}
+f\left(\vec{r}, k\right) &, 0 \leq k < \alpha \\
+f\left(\vec{r}, k\right)
++ \frac{1}{\beta -\alpha +1} \cdot P\left\lbrace \vec{I} = \vec{r} \right\rbrace &, \alpha \leq k < \beta \\
+\frac{1}{\beta -\alpha +1} \cdot P\left\lbrace \vec{I} = \vec{r} \right\rbrace &, k = \beta \\
+\end{cases} $$
+
+特别地，最终刷怪位置对应的概率可以记为：
+
+$$ s\left(\vec{r}\right)
+= P\left\lbrace \vec{S} = \vec{r} \right\rbrace
+= f\left(\vec{r}, 0\right) $$
+
+迭代步骤中对应的其他一些表达式可以简记为：
+
+$$ a\left(\vec{r}, k\right)
+= P\left\lbrace \vec{A}_k = \vec{r} \right\rbrace $$
+
+$$ f\left(\vec{r}, k\right)
+= \sum_{\vec{\rho} \in \delta _0} {\left(
+    g\left(\vec{\rho}\right)
+    \cdot a\left(\vec{r} + \vec{\rho}, k+1\right)
+\right)} $$
+
+$$ \phi\left(\vec{r}\right)
+= P\left\lbrace \vec{I} = \vec{r} \right\rbrace $$
+
+### **具体计算**
+
+整理上述简化的表达式，可以得到以下迭代函数（忽略迭代路径不会到达的情况）：
+
+$$ a\left(\vec{r}, k\right)
+= \begin{cases}
+\sum_{\vec{\rho} \in \delta _0} {\left(
+    g\left(\vec{\rho}\right)
+    \cdot a\left(\vec{r} + \vec{\rho}, k+1\right)
+\right)} &, 0 \leq k < \alpha \\
+\sum_{\vec{\rho} \in \delta _0} {\left(
+    g\left(\vec{\rho}\right)
+    \cdot a\left(\vec{r} + \vec{\rho}, k+1\right)
+\right)}
++ \frac{1}{\beta -\alpha +1} \cdot \phi\left(\vec{r}\right) &, \alpha \leq k < \beta \\
+\frac{1}{\beta -\alpha +1} \cdot \phi\left(\vec{r}\right) &, k = \beta \\
+0 &, k > \beta \\
+\end{cases} $$
+
+在1.12.2中，可以直接认定游走次数的取值范围：$\alpha = 1,\space \beta = 4$ ；该参数的具体讲解和跨版本注意事项需参阅后文。
+
+为完成上述计算，需要给出 $\phi\left(\vec{r}\right)$ 和 $g\left(\vec{\rho}\right)$ 的实现方式。
+
+#### $\phi\left(\vec{r}\right)$ 的计算：
+
+从刷怪机制层面分析，变量 $\vec{I}$ 的分布相当于：先在区块中以均匀概率随机抽取一个方块 $\vec{r} = \left(X, Z\right)$ 坐标，再根据该坐标对应的有效高度范围均匀随机抽取一个高度 $Y$ ，相应的三维方块坐标 $\left(X, Y, Z\right)$ 即为刷怪尝试的起始点。由此可得出 $\phi\left(\vec{r}\right)$ 的计算方式：
+
+$$ \phi\left(\vec{r}\right) = \frac{1}{L^2\cdot h\left(\vec{r}\right)}$$
+
+其中， $L = 16$ 是区块的水平截面边长，也是区段的边长； $h\left(\vec{r}\right)$ 表示水平方块坐标 $\vec{r} = \left(x, z\right)$ 对应的有效高度范围。
+
+引入辅助函数 $y_m\left(\vec{r}\right)$ 表示坐标 $\vec{r} = \left(x, z\right)$ 对应的最高遮光方块 $y$ 坐标； 引入记号 $C\left(\vec{r}\right)$ 表示 $\vec{r}$ 所在区块的全部 $\left(x, z\right)$ 坐标的集合。
+
+在1.12.2中， $h\left(\vec{r}\right)$ 定义如下：
+
+$$ h\left(\vec{r}\right)
+= L \cdot \left\lceil\frac{1}{L}
+\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
+    y_m\left(\vec{\omega}\right)
+\right\rbrace + 2\right)\right\rceil $$
+
+其含义可以解释为： $\vec{r}$ 所在区块的最高遮光方块高度 $+1$ 后的高度（最高可刷怪高度）所在的区段总高度。
+
+例如，假设一个区块的最高遮光方块高度为 $30$ ，则其最高可刷怪高度为 $31$ ，由于 $31 \in \left[16, 31\right]$ ，所以此高度位于第 $2$ 个区段， $h = 2 \times 16 = 32$ 。
+
+在实际运行中，刷怪高度选取的范围是 $\left[0, h-1\right] \cap \mathbb{Z}$ ，恰好有 $h$ 种可能的取值。
 
 # 相关资料
 
