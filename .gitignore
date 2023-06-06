@@ -1,2 +1,9 @@
 Not_Minecraft
 *.pdf
+*.aux
+*.fdb_latexmk
+*.log
+*.fls
+*.out
+*.synctex*
+*.xdv
