@@ -31,11 +31,11 @@
 - $\vec{S}$ 可以视为 $\vec{A}_k$ 的特殊情况： $\vec{S} = \vec{A}_0$ ，即最后一次游走选中的位置即为实际生成位置；
 - $\vec{I}$ 并不能视为 $\vec{A}_k$ 的特殊情况，具体原因可见于下文。
 
-## **群系无关的单组概率**
+## **无取消的单组概率**
 
 ### **概述**
 
-本文的核心目的之一是计算在某一gt的刷怪阶段中，特定位置生成某类生物的概率。为简化模型，本节暂时只考虑与生物种类无关的情况，即只考虑与刷怪位置的选取有关的过程。
+本文的核心目的之一是计算在某一gt的刷怪阶段中，特定位置生成某类生物的概率。在刷怪过程中，生物种类的选取是随机的；为简化模型，本节暂时只考虑与生物种类无关的情况，即只考虑与刷怪位置的选取有关的过程。
 
 实际的刷怪循环中，每gt平均每区块会进行3组刷怪尝试；为继续简化模型，本节计算的概率是1组刷怪尝试（包含一次或多次游走）的生成概率，记为：
 
@@ -43,6 +43,8 @@ $$ P\left\lbrace \vec{S} = \left(x_0, z_0\right) \right\rbrace,
 \vec{r}_0 = \left(x_0, z_0\right) $$
 
 如果需要计算3组刷怪尝试提供的总概率，需要进一步的推演。
+
+刷怪游走的各个步骤中，有可能因为普通方块（固体方块）、生物群系、区块生成上限等原因取消本组或本区块的尝试，在实际的计算中需要考虑。但为了简化思路，本节只考虑无阻挡、无限制的情况，即假设刷怪游走过程总能无中断地进行，在此基础上讨论单点刷怪概率的计算方法。
 
 根据刷怪游走过程的基本机制，可以给出各类概率之间的关系。
 
@@ -52,13 +54,13 @@ $$ P\left\lbrace \vec{S} = \left(x_0, z_0\right) \right\rbrace,
 
 $$ P\left\lbrace \vec{S} = \vec{r}_0 \right\rbrace 
 = \sum_{\vec{r}_1 \in \delta\left(\vec{r}_0 \right)} {\left(
-    P\left\lbrace \vec{S} = \vec{r}_0 \mid
+    P\left\lbrace \vec{S} = \vec{r}_0 \middle|
     \vec{A}_1 = \vec{r}_1 \right\rbrace \cdot P\left\lbrace \vec{A}_1 = \vec{r}_1 \right\rbrace
 \right)} $$
 
 其中， $\delta\left(\vec{r}_i\right)$ 表示可能以 $\vec{r}_i$ 为终点的全部单次游走起点的集合，实际定义为以 $\vec{r}_i$ 为中心的 $11 \times 11$ 正方形空间（ $11 = 5 + 1 + 5$ ），粗略描述如下：
 
-$$ \delta\left(\vec{r}_i\right) = \left\lbrace \vec{r}_j \mid
+$$ \delta\left(\vec{r}_i\right) = \left\lbrace \vec{r}_j \middle|
 \left(\vec{r}_j - \vec{r}_i\right) \in
 \left(\left[-5, +5\right]^2 \cap \mathbb{Z}^2\right) \right\rbrace $$
 
@@ -91,7 +93,7 @@ $$ \delta\left(\vec{r}_i\right) = \left\lbrace
 
 $$ P\left\lbrace \vec{A}_i = \vec{r}_i \right\rbrace \\
 = \sum_{\vec{r} \in \delta\left(\vec{r}_i\right)} {\left(
-    P\left\lbrace \vec{A}_i = \vec{r}_i \mid \vec{A}_{i+1} = \vec{r} \right\rbrace
+    P\left\lbrace \vec{A}_i = \vec{r}_i \middle| \vec{A}_{i+1} = \vec{r} \right\rbrace
     \cdot P\left\lbrace \vec{A}_{i+1} = \vec{r} \right\rbrace
 \right)} \\
 + P\left\lbrace \vec{I} = \vec{r}_i \right\rbrace
@@ -101,7 +103,7 @@ $$ P\left\lbrace \vec{A}_i = \vec{r}_i \right\rbrace \\
 
 $$ P\left\lbrace B = n \right\rbrace
 = \begin{cases}
-\frac{1}{\beta -\alpha +1} &, \left(\alpha \leq n \leq \beta\right) \cap \left(b \in\mathbb{N}^+\right) \\
+\dfrac{1}{\beta -\alpha +1} &, \left(\alpha \leq n \leq \beta\right) \cap \left(b \in\mathbb{N}^+\right) \\
 0 &, \text{else}
 \end{cases} $$
 
@@ -129,15 +131,15 @@ $$ \left(\forall{k}\right), k > \beta \to P\left\lbrace \left(\vec{A} = \vec{r}\
 注意到上述表达式中的可重复部分，定义以下简化的表达式：
 
 $$ g\left(\vec{\rho}\right)
-= P\left\lbrace \vec{A}_k = \vec{0} \mid \vec{A}_{k+1} = \vec{\rho} \right\rbrace $$
+= P\left\lbrace \vec{A}_k = \vec{0} \middle| \vec{A}_{k+1} = \vec{\rho} \right\rbrace $$
 
 可以这样解释 $g\left(\vec{\rho}\right)$ 的定义：
 1. 考虑刷怪游走的机制，在相应取值范围内， $g\left(\vec{\rho}\right)$ 是一个与剩余游走次数 $k$ 无关的函数。
 2. 又考虑到 $\vec{r}_{k+1}$ 与 $\delta\left(\vec{r}_k\right)$ 实际上具有固定的相对位置关系，可以将两者之差用单一的变量 $\vec{\rho} = \vec{r}_{k+1} - \vec{r}_k$ 来表示，即： $g\left(\vec{\rho}\right)$ 的返回值仅与两个坐标的相对位置有关，而与绝对位置无关：
 
 $$ \forall{\vec{r}_1}, \forall{\vec{r}_2},
-P\left\lbrace \vec{A}_k = \vec{r}_1 \mid \vec{A}_{k+1} = \vec{r}_1 + \vec{\rho} \right\rbrace
-= P\left\lbrace \vec{A}_k = \vec{r}_2 \mid \vec{A}_{k+1} = \vec{r}_2 + \vec{\rho} \right\rbrace $$
+P\left\lbrace \vec{A}_k = \vec{r}_1 \middle| \vec{A}_{k+1} = \vec{r}_1 + \vec{\rho} \right\rbrace
+= P\left\lbrace \vec{A}_k = \vec{r}_2 \middle| \vec{A}_{k+1} = \vec{r}_2 + \vec{\rho} \right\rbrace $$
 
 同时， $\delta\left(\vec{0}\right)$ 的值显然是常量：
 
@@ -158,8 +160,8 @@ $$ P\left\lbrace \vec{A}_k = \vec{r} \right\rbrace
 = \begin{cases}
 f\left(\vec{r}, k\right) &, 0 \leq k < \alpha \\
 f\left(\vec{r}, k\right)
-+ \frac{1}{\beta -\alpha +1} \cdot P\left\lbrace \vec{I} = \vec{r} \right\rbrace &, \alpha \leq k < \beta \\
-\frac{1}{\beta -\alpha +1} \cdot P\left\lbrace \vec{I} = \vec{r} \right\rbrace &, k = \beta \\
++ \dfrac{1}{\beta -\alpha +1} \cdot P\left\lbrace \vec{I} = \vec{r} \right\rbrace &, \alpha \leq k < \beta \\
+\dfrac{1}{\beta -\alpha +1} \cdot P\left\lbrace \vec{I} = \vec{r} \right\rbrace &, k = \beta \\
 \end{cases} $$
 
 特别地，最终刷怪位置对应的概率可以记为：
@@ -198,8 +200,8 @@ $$ a\left(\vec{r}, k\right)
     g\left(\vec{\rho}\right)
     \cdot a\left(\vec{r} + \vec{\rho}, k+1\right)
 \right)}
-+ \frac{1}{\beta -\alpha +1} \cdot \phi\left(\vec{r}\right) &, \alpha \leq k < \beta \\
-\frac{1}{\beta -\alpha +1} \cdot \phi\left(\vec{r}\right) &, k = \beta \\
++ \dfrac{\phi\left(\vec{r}\right)}{\beta -\alpha +1} &, \alpha \leq k < \beta \\
+\dfrac{\phi\left(\vec{r}\right)}{\beta -\alpha +1} &, k = \beta \\
 0 &, k > \beta \\
 \end{cases} $$
 
@@ -211,7 +213,7 @@ $$ a\left(\vec{r}, k\right)
 
 从刷怪机制层面分析，变量 $\vec{I}$ 的分布相当于：先在区块中以均匀概率随机抽取一个方块 $\vec{r} = \left(X, Z\right)$ 坐标，再根据该坐标对应的有效高度范围均匀随机抽取一个高度 $Y$ ，相应的三维方块坐标 $\left(X, Y, Z\right)$ 即为刷怪尝试的起始点。由此可得出 $\phi\left(\vec{r}\right)$ 的计算方式：
 
-$$ \phi\left(\vec{r}\right) = \frac{1}{L^2\cdot h\left(\vec{r}\right)}$$
+$$ \phi\left(\vec{r}\right) = \dfrac{1}{L^2\cdot h\left(\vec{r}\right)}$$
 
 其中， $L = 16$ 是区块的水平截面边长，也是区段的边长； $h\left(\vec{r}\right)$ 表示水平方块坐标 $\vec{r} = \left(x, z\right)$ 对应的有效高度范围。
 
@@ -220,7 +222,7 @@ $$ \phi\left(\vec{r}\right) = \frac{1}{L^2\cdot h\left(\vec{r}\right)}$$
 在1.12.2中， $h\left(\vec{r}\right)$ 定义如下：
 
 $$ h\left(\vec{r}\right)
-= L \cdot \left\lceil\frac{1}{L}
+= L \cdot \left\lceil\dfrac{1}{L}
 \left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
     y_m\left(\vec{\omega}\right)
 \right\rbrace + 2\right)\right\rceil $$
@@ -233,8 +235,16 @@ $$ h\left(\vec{r}\right)
 
 实际计算方法可以总结为：
 
+$$ \phi\left(\vec{r}\right) = \left(L^3
+\left\lceil\dfrac{1}{L}
+\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
+    y_m\left(\vec{\omega}\right)
+\right\rbrace + 2\right)\right\rceil\right)^{-1}$$
+
+代入常量，得到：
+
 $$ \phi\left(\vec{r}\right) = \left(4096\cdot
-\left\lceil\frac{1}{16}
+\left\lceil\dfrac{1}{16}
 \left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
     y_m\left(\vec{\omega}\right)
 \right\rbrace + 2\right)\right\rceil\right)^{-1}$$
@@ -250,12 +260,12 @@ $$ X = X_P - X_N;\space X_P \sim U\left[0, 5\right];\space X_N \sim U\left[0, 5\
 将游走半径记作  $\lambda = 6$ 。分布情况如下：
 
 $$ P\left\lbrace X = t \right\rbrace
-= \frac{\lambda - \left|t\right|}{\lambda ^2} ;\space \left(-\lambda < t < \lambda\right) \wedge \left(t\in\mathbb{Z}\right) $$
+= \dfrac{\lambda - \left|t\right|}{\lambda ^2} ;\space \left(-\lambda < t < \lambda\right) \wedge \left(t\in\mathbb{Z}\right) $$
 
 $Z$ 方向的分布有类似的规律：
 
 $$ P\left\lbrace Z = t \right\rbrace
-= \frac{\lambda - \left|t\right|}{\lambda ^2} ;\space \left(-\lambda < t < \lambda\right) \wedge \left(t\in\mathbb{Z}\right) $$
+= \dfrac{\lambda - \left|t\right|}{\lambda ^2} ;\space \left(-\lambda < t < \lambda\right) \wedge \left(t\in\mathbb{Z}\right) $$
 
 将两者结合起来，可以得到 $g\left(\vec{\rho}\right)$ 的表达式：
 
@@ -264,15 +274,95 @@ $$ g\left(\vec{\rho}\right)
 = P\left\lbrace X = x \right\rbrace \cdot P\left\lbrace Z = z \right\rbrace $$
 
 $$ g\left(\vec{\rho}\right)
-= \frac{\left(\lambda - \left|x\right|\right)
+= \dfrac{\left(\lambda - \left|x\right|\right)
 \left(\lambda - \left|z\right|\right)}{\lambda ^4}
-= \frac{\left(6 - \left|x\right|\right)
+= \dfrac{\left(6 - \left|x\right|\right)
 \left(6 - \left|z\right|\right)}{1296}
 ;\space \left(\vec{\rho} \in \delta _0\right) $$
 
-#### 总论：
+#### 结论：
 
-WIP
+游走迭代公式：
+
+$$ a\left(\vec{r}, k\right)
+= \begin{cases}
+\sum_{\vec{\rho} \in \delta _0} {\left(
+    g\left(\vec{\rho}\right)
+    \cdot a\left(\vec{r} + \vec{\rho}, k+1\right)
+\right)} &, 0 \leq k < \alpha \\
+\sum_{\vec{\rho} \in \delta _0} {\left(
+    g\left(\vec{\rho}\right)
+    \cdot a\left(\vec{r} + \vec{\rho}, k+1\right)
+\right)}
++ \dfrac{\phi\left(\vec{r}\right)}{\beta -\alpha +1} &, \alpha \leq k < \beta \\
+\dfrac{\phi\left(\vec{r}\right)}{\beta -\alpha +1} &, k = \beta \\
+0 &, k > \beta \\
+\end{cases} $$
+
+刷怪概率的定义：
+
+$$ s\left(\vec{r}\right)
+= a\left(\vec{r}, 0\right) $$
+
+高度坐标的分布：
+
+$$ \phi\left(\vec{r}\right) = \dfrac{1}{L^2\cdot h\left(\vec{r}\right)}$$
+
+$$ h\left(\vec{r}\right)
+= L \cdot \left\lceil\dfrac{1}{L}
+\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
+    y_m\left(\vec{\omega}\right)
+\right\rbrace + 2\right)\right\rceil $$
+
+$$ L = 16;\space \vec{r} = \left(x, z\right) $$
+
+$$ C\left(\vec{r}\right)
+= \left\lbrace \left(m, n\right)\in \mathbb{Z}^2 \middle|
+\left(
+    \left\lfloor \dfrac{m}{L} \right\rfloor = \left\lfloor \dfrac{x}{L} \right\rfloor
+\right)
+\wedge
+\left(
+    \left\lfloor \dfrac{n}{L} \right\rfloor = \left\lfloor \dfrac{z}{L} \right\rfloor
+\right)
+\right\rbrace $$
+
+游走终点的分布：
+
+$$ g\left(\vec{\rho}\right)
+= \dfrac{\left(\lambda - \left|x\right|\right)
+\left(\lambda - \left|z\right|\right)}{\lambda ^4}
+;\space \left(\vec{\rho} \in \delta _0\right) $$
+
+$$ \lambda = 6 ; \space
+\delta _0 = \left\lbrace \left(x,z\right) \in \mathbb{Z}^2 \middle|x, z \in \left(-\lambda, +\lambda\right)
+ \right\rbrace $$
+
+## **无取消的全组概率**
+
+上文提到：一次刷怪循环中，每个区块都会随机选取一个方块，进行 $3$ 组刷怪尝试，每组尝试包含若干次游走（如果不考虑排除事由，则至少 $\alpha$ 次，至多 $\beta$ 次）。上一节计算的是单组刷怪尝试提供的生成概率，而实际的生成概率需要考虑 $3$ 组刷怪尝试。本节将在仍然不考虑阻挡、限制等刷怪排除事由的理想情况下尝试解决这一问题。
+
+需要注意到一个事实：方块选取在先，刷怪尝试在后。这意味着每个区块的刷怪循环包含的 $3$ 组刷怪尝试具有共同的刷怪初始点，作为各组的初次游走起点。同一个起点可以演化出3条游走路径。
+
+## **刷怪概率的排除事项**
+
+上文「无取消的刷怪概率」假设了无阻挡、无限制的情况，给出了单点刷怪概率的基本算法，但这种理想情况并不符合刷怪机制运行的大多数实际情况。本节需要在上文结论的基础上引入可能影响刷怪概率计算的实际情况，使结论更加完善。
+
+刷怪概率的排除分为若干类情况，至少包括：
+- 刷怪尝试被取消或中断：
+    - 游走起点是普通方块，取消本轮全部3组尝试；
+    - 游走过程中获取的生物群系生成列表为空，取消本组尝试；
+    - 本轮生成数量超过单区块上限，取消本轮后续全部尝试；
+- 生成失败，但刷怪尝试未中断，可以继续游走：
+    - 与玩家或出生点的距离过近；
+    - 生物种类已经确定，生成位置的生物群系不符合要求；
+    - 生成位置的上侧或下侧方块状态不符合要求；
+    - 生物碰撞检查未通过；
+    - ……
+
+观察上述例子可以发现，除了「生成数量超过单区块上限」的情况以外，假设刷怪点附近的环境恒定，则大多数刷怪排除事由的检查机制都可以表示为仅与方块位置和生物种类有关的函数。
 
 # 相关资料
 
+- hiback, CCS_Covenant. MC1.13.2 刷怪机制详细讲解. https://www.bilibili.com/read/cv3287011.
+- 
