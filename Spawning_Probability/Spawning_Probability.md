@@ -1,6 +1,6 @@
 # 刷怪概率与速率的计算
 
-**摘要：**
+**摘要：** 本文的内容有比较严重的影响写作与理解的错误，别看了（（
 
 **关键词：**「」
 
@@ -364,5 +364,5 @@ $$ \lambda = 6 ; \space
 
 # 相关资料
 
-- hiback, CCS_Covenant. MC1.13.2 刷怪机制详细讲解. https://www.bilibili.com/read/cv3287011.
+- hiback, CCS_Covenant. [MC1.13.2 刷怪机制详细讲解](https://www.bilibili.com/read/cv3287011).
 - 
