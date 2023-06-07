@@ -17,6 +17,16 @@ $$ s\left(\vec{r}\right) = E\left(\xi\middle|\vec{S}_0 = \vec{r}\right) $$
 
 可以做一些简单的定性分析： $\xi$ 的样本空间是 $\left\{0, 1, 2, \dots, n\right\}$ ，也可以直接认定为 $\mathbb{N}$ ——如果多个刷怪游走路径都在相同的 $\vec{S} = \vec{r}$ 处刷出生物， $\xi$ 就会取到很大的值。
 
-在实际的刷怪过程中，生物需要进行碰撞检查，这就涉及某个版本差异：在1.9~1.12.2，生物可以在实体中生成，实体碰撞检查实际上失效了，因此显然有 $P\left(\xi > 1\right) > 0$ 。
+在实际的刷怪过程中，生物需要进行碰撞检查，这就涉及某个版本差异：在1.9~1.12.2，生物可以在实体中生成，实体碰撞检查实际上失效了，因此显然有 $P\left(\xi \geq 2\right) > 0$ 。
 
 > 但在1.13+，碰撞检查可以正常工作，生物不能在已经生成的生物占据的空间中生成，因此 $\xi$ 在最终生成的阶段只可能取到 $0$ 或 $1$ (待验证)
+
+$$
+E\left(\xi\middle|\vec{S}_0 = \vec{r}\right) \\
+= \sum_{t=0}^{\infty}{t\cdot P\left(\xi=t\middle|\vec{S}_0 = \vec{r}\right)} \\
+= \sum_{t=0}^{\infty}{t\cdot \frac{P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)\cdot P\left(\xi=t\right)}{P\left(\vec{S}_0 = \vec{r}\right)}} \\
+= \sum_{t=0}^{\infty}{t\cdot \frac{P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)}{P\left(\vec{S}_0 = \vec{r}\right)}\cdot \sum_{\vec{\rho}\in\delta _0}P\left(\xi=t\middle|\vec{S}_1 = \vec{r} + \vec{\rho}\right)\cdot P\left(\vec{S}_1 = \vec{r} + \vec{\rho}\right)} \\
+= \sum_{t=0}^{\infty}{t\cdot P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)\cdot \sum_{\vec{\rho}\in\delta _0}P\left(\xi=t\middle|\vec{S}_1 = \vec{r} + \vec{\rho}\right)\cdot\frac{P\left(\vec{S}_1 = \vec{r} + \vec{\rho}\right)}{P\left(\vec{S}_0 = \vec{r}\right)}} \\
+= \begin{cases}
+\end{cases}
+$$
