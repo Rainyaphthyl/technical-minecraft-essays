@@ -1,5 +1,7 @@
 # 刷怪速率的计算方法简述
 
+## 错误的尝试
+
 考虑以下随机变量：
 
 - $\xi$ ，在某一位置，进行刷怪步骤对应事件的频次；此处“事件”可以是“最终生成”、“游走到达”等。
@@ -26,7 +28,12 @@ E\left(\xi\middle|\vec{S}_0 = \vec{r}\right) \\
 = \sum_{t=0}^{\infty}{t\cdot P\left(\xi=t\middle|\vec{S}_0 = \vec{r}\right)} \\
 = \sum_{t=0}^{\infty}{t\cdot \frac{P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)\cdot P\left(\xi=t\right)}{P\left(\vec{S}_0 = \vec{r}\right)}} \\
 = \sum_{t=0}^{\infty}{t\cdot \frac{P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)}{P\left(\vec{S}_0 = \vec{r}\right)}\cdot \sum_{\vec{\rho}\in\delta _0}P\left(\xi=t\middle|\vec{S}_1 = \vec{r} + \vec{\rho}\right)\cdot P\left(\vec{S}_1 = \vec{r} + \vec{\rho}\right)} \\
-= \sum_{t=0}^{\infty}{t\cdot P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)\cdot \sum_{\vec{\rho}\in\delta _0}P\left(\xi=t\middle|\vec{S}_1 = \vec{r} + \vec{\rho}\right)\cdot\frac{P\left(\vec{S}_1 = \vec{r} + \vec{\rho}\right)}{P\left(\vec{S}_0 = \vec{r}\right)}} \\
+= \sum_{\vec{\rho}\in\delta _0}{\sum_{t=0}^{\infty}{t\cdot P\left(\vec{S}_0 = \vec{r} \middle|\xi=t\right)\cdot P\left(\xi=t\middle|\vec{S}_1 = \vec{r} + \vec{\rho}\right)\cdot\frac{P\left(\vec{S}_1 = \vec{r} + \vec{\rho}\right)}{P\left(\vec{S}_0 = \vec{r}\right)}}} \\
+= \sum_{\vec{\rho}\in\delta _0}{P\left(\vec{S}_0 = \vec{r}\right)\cdot E\left(\xi\middle|\vec{S}_1 = \vec{r} + \vec{\rho}\right)\cdot\frac{P\left(\vec{S}_1 = \vec{r} + \vec{\rho}\right)}{P\left(\vec{S}_0 = \vec{r}\right)}} \\
 = \begin{cases}
 \end{cases}
 $$
+
+## 重构
+
+
