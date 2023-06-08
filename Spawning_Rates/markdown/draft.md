@@ -36,4 +36,73 @@ $$
 
 ## 重构
 
+考虑以下随机变量：
 
+- $\xi$ ，在某一位置，进行刷怪步骤对应事件的频次；此处“事件”可以是“最终生成”、“游走到达”等。
+
+将相应位置的方块坐标记为 $\vec{r}$ ，剩余游走次数记为 $w$ ，则 $\xi$ 应是与 $\vec{r}, w$ 都有关的量。可以考虑四维或三维数组 ${\left\{\xi\left(\vec{r}, w\right)\right\}}$ （方块坐标包含三维，或者只考虑二维 $\left(x, z\right)$ 坐标），其中每个元素都是一个随机变量。
+
+当 $w = 0$ 时，游走次数均已用完，此时的坐标 $\vec{r}$ 即表示生物生成位置的坐标，相应的 $\xi\left(\vec{r}, 0\right)$ 表示生物在 $\vec{r}$ 处生成的数量。
+
+本文关注的值是 $\xi$ 的分布律或期望：
+
+$$
+\begin{equation}
+f_\xi\left(t; \vec{r}, s\right) = P\left\{\xi\left[\vec{r}, w\right] = t\right\}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+s\left(\vec{r}, w\right) = E\left\{\xi\left[\vec{r}, w\right]\right\}
+\end{equation}
+$$
+
+为方便描述，对游走次数剩余0的情况定义以下专门的符号：
+
+$$
+\begin{equation}
+s\left(\vec{r}\right) = s\left(\vec{r}, 0\right)
+\end{equation}
+$$
+
+考虑 $\left(\forall \vec{r} \forall w\right) \xi\left[\vec{r}, w\right]$ 之间的关系；为此需要先引入一个用于中间连接的随机变量 $\eta\left[\vec{r}, w, \vec{\rho}\right]$ ，表示刷怪过程以 $\vec{r}$ 为起点游走到 $\left(\vec{r} + \vec{\rho}\right)$ 的次数。此随机变量的设置建立在 $\xi\left[\vec{r}, w\right]$ 的基础上，即已经包含了对于“以 $\vec{r}$ 为终点”这一前置随机事件的描述。
+
+根据定义，可以得到以下关系：
+
+$$
+\begin{equation}
+\xi\left[\vec{r}, w\right] =
+\sum_{\vec{\rho}\in\delta _{w}}{\eta\left[\vec{r}, w, \vec{\rho}\right]}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\xi\left[\vec{r}, w\right] =
+\sum_{\vec{\rho}\in\delta _{w+1}}{\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\xi\left[\vec{r}, w\right] = \begin{cases}
+\sum_{\vec{\rho}\in\delta _{w+1}}{\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]} &, 0 \leq w \leq \alpha - 1 \\
+\end{cases}
+\end{equation}
+$$
+
+以上关系仅在某些条件下成立，但这里暂未给出所需的条件。
+
+设游走次数 $\psi$ 的全部可能取值的范围是 $\left[\alpha, \beta\right] \cap \mathbb{N}$ ，其中 $1\leq\alpha\leq\beta;\space \alpha, \beta \in \mathbb{N}$ 。
+
+> 注意：此处的游走次数是随机变量，并不是上述 $\xi$ 定义中的实际剩余游走次数 $w$ 。
+
+$w = 0$ 表示正式刷出生物。设 $\psi$ 在一次事件中实际取值为 $c$ ，则 $w = c$ 表示初次游走的开始、刷怪尝试的初始情况。
+
+$$
+\begin{equation}
+\xi\left[\vec{r}, w\right] =
+\sum_{\vec{\rho}\in\delta _{w+1}}{\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]} \space, \text{if} \left(0 \leq w \leq \psi - 1\right)
+\end{equation}
+$$
