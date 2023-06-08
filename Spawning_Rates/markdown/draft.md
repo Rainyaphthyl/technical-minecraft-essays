@@ -66,29 +66,60 @@ s\left(\vec{r}\right) = s\left(\vec{r}, 0\right)
 \end{equation}
 $$
 
-考虑 $\left(\forall \vec{r} \forall w\right) \xi\left[\vec{r}, w\right]$ 之间的关系；为此需要先引入一个用于中间连接的随机变量 $\eta\left[\vec{r}, w, \vec{\rho}\right]$ ，表示刷怪过程以 $\vec{r}$ 为起点游走到 $\left(\vec{r} + \vec{\rho}\right)$ 的次数。此随机变量的设置建立在 $\xi\left[\vec{r}, w\right]$ 的基础上，即已经包含了对于“以 $\vec{r}$ 为终点”这一前置随机事件的描述。
+考虑 $\left(\forall \vec{r} \forall w\right) \xi\left[\vec{r}, w\right]$ 之间的关系；为此需要先引入一个用于中间连接的随机变量 $\eta\left[\vec{r}, w, \vec{\rho}\right]$ ，表示刷怪过程以 $\vec{r}$ 为起点游走到 $\left(\vec{r} + \vec{\rho}\right)$ 的次数。 $\psi$ 仅用于描述某一次游走的位移量，与 $\xi$ 无关。
+
+$$
+\begin{equation}
+\lambda = 6
+\end{equation}
+$$
+
+$$
+\begin{equation}
+g\left(\vec{\rho}\right)
+= \frac{\left(\lambda - \left|x\right|\right)
+\left(\lambda - \left|z\right|\right)}{\lambda ^4}
+= \frac{\left(6 - \left|x\right|\right)
+\left(6 - \left|z\right|\right)}{1296}
+;\space \left(\vec{\rho} \in \delta _0\right)
+\end{equation}
+$$
+
+$$
+\begin{equation}
+g\left(\vec{\rho}\right)
+= \begin{cases}
+\frac{\left(\lambda - \left|x\right|\right)\left(\lambda - \left|z\right|\right)}{\lambda ^4} &, \vec{\rho}\in\delta _0
+\\ 0 &, \text{else}
+\end{cases}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+P\left\{\eta\left[\vec{\rho}\right] = k\right\}
+= P\left\{\eta _{\left[\vec{r}, w, \vec{\rho}\right]} = k\right\}
+= \begin{cases}
+g\left(\vec{\rho}\right) &, k = 1
+\\ 1 - g\left(\vec{\rho}\right) &, k = 0
+\\ 0 &, \text{else}
+\end{cases}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+E\left\{\eta\left[\vec{\rho}\right]\right\}
+= g\left(\vec{\rho}\right)
+\end{equation}
+$$
 
 根据定义，可以得到以下关系：
 
 $$
 \begin{equation}
 \xi\left[\vec{r}, w\right] =
-\sum_{\vec{\rho}\in\delta _{w}}{\eta\left[\vec{r}, w, \vec{\rho}\right]}
-\end{equation}
-$$
-
-$$
-\begin{equation}
-\xi\left[\vec{r}, w\right] =
-\sum_{\vec{\rho}\in\delta _{w+1}}{\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]}
-\end{equation}
-$$
-
-$$
-\begin{equation}
-\xi\left[\vec{r}, w\right] = \begin{cases}
-\sum_{\vec{\rho}\in\delta _{w+1}}{\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]} &, 0 \leq w \leq \alpha - 1 \\
-\end{cases}
+\sum_{\vec{\rho}\in\delta _{w+1}}{\xi\left[\vec{r}+\vec{\rho}, w+1\right]\cdot\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]}
 \end{equation}
 $$
 
@@ -102,7 +133,129 @@ $w = 0$ 表示正式刷出生物。设 $\psi$ 在一次事件中实际取值为 
 
 $$
 \begin{equation}
-\xi\left[\vec{r}, w\right] =
-\sum_{\vec{\rho}\in\delta _{w+1}}{\eta\left[\vec{r}+\vec{\rho}, w+1, -\vec{\rho}\right]} \space, \text{if} \left(0 \leq w \leq \psi - 1\right)
+\delta\left(\vec{r}_i\right) = \left\{ \vec{r}_j \middle|
+\left(\vec{r}_j - \vec{r}_i\right) \in
+\left(\left[-5, +5\right]^2 \cap \mathbb{Z}^2\right) \right\}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\delta = \delta _0 = \delta\left(\vec{0}\right)
+= \left(\left[-5, +5\right]^2 \cap \mathbb{Z}^2\right)
+\end{equation}
+$$
+
+考虑初次游走起点对应的 $\xi$ 的分布（单组刷怪尝试，不考虑生物种类）：
+
+$$
+\begin{equation}
+\begin{align*}
+P\left\{\xi\left[\vec{r}, c\right]=k\middle|\psi=c\right\}
+&= \begin{cases}
+u\left(\vec{r}\right) &, k = 1
+\\ 1 - u\left(\vec{r}\right) &, k = 0
+\\ 0 &, \text{else}
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+u\left(\vec{r}\right) = \frac{1}{L^2\cdot h\left(\vec{r}\right)}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+h\left(\vec{r}\right)
+= L \cdot \left\lceil\frac{1}{L}
+\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
+y_m\left(\vec{\omega}\right)
+\right\rbrace + 2\right)\right\rceil
+\end{equation}
+$$
+
+$$
+\begin{equation}
+L = 16;\space \vec{r} = \left(x, z\right)
+\end{equation}
+$$
+
+$$
+\begin{equation}
+C\left(\vec{r}\right)
+= \left\lbrace \left(m, n\right)\in \mathbb{Z}^2 \middle|
+\left(
+\left\lfloor \frac{m}{L} \right\rfloor = \left\lfloor \frac{x}{L} \right\rfloor
+\right)
+\wedge
+\left(
+\left\lfloor \frac{n}{L} \right\rfloor = \left\lfloor \frac{z}{L} \right\rfloor
+\right)
+\right\rbrace
+\end{equation}
+$$
+
+显然可以得到：
+
+$$
+\begin{equation}
+\begin{align*}
+E\left\{\xi\left[\vec{r}, c\right]\middle|\psi=c\right\}
+&= u\left(\vec{r}\right)
+\\&= \left(L^3
+\left\lceil\frac{1}{L}
+\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
+y_m\left(\vec{\omega}\right)
+\right\rbrace + 2\right)\right\rceil\right)^{-1}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+P\left\{\psi = c\right\}
+= \begin{cases}
+\frac{1}{\beta - \alpha + 1} &, \alpha \leq c \leq \beta
+\\ 0 &, \text{else}
+\end{cases}
+\end{equation}
+$$
+
+游走总次数是另一个随机变量；限定 $w \leq c$ ，考虑对生成数量的期望进行分解：
+
+$$
+\begin{equation}
+\begin{align*}
+E\left\{\xi _{\left[\vec{r}, w\right]}\right\}
+= \sum _{c=w}^{\beta}{E\left\{\xi _{\left[\vec{r}, w\right]}\middle|\psi=c\right\}\cdot P\left\{\psi = c\right\}}
+\\= \frac{1}{\beta-\alpha+1}\cdot\sum _{c=\max{\left\{\alpha, w\right\}}}^{\beta}{E\left\{\xi _{\left[\vec{r}, w\right]}\middle|\psi=c\right\}}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+E\left\{\xi _{\left[\vec{r}, w\right]}\middle|\psi=c\right\}
+&= \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{E\left\{\xi _{\left[\vec{r}+\vec{\rho}, w+1\right]}\cdot\eta _{\left[-\vec{\rho}\right]}\middle|\psi=c\right\}} &, 0 \leq w < c
+\\ u\left(\vec{r}\right) &, w = c
+\end{cases}
+\\&= \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{g\left(\vec{\rho}\right)\cdot E\left\{\xi _{\left[\vec{r}+\vec{\rho}, w+1\right]}\middle|\psi=c\right\}} &, 0 \leq w < c
+\\ u\left(\vec{r}\right) &, w = c
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+简记为以下公式：
+
+$$
+\begin{equation}
+s\left(\vec{r}, w\right)=
 \end{equation}
 $$
