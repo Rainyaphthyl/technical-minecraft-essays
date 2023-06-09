@@ -289,5 +289,7 @@ $$
 
 对于 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ ：
 - 如果 $\vec{r}_1 = \vec{r}_2$ ，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 是同一个随机变量。
-- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 不在同一区块，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 互相独立。
-- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，但 $\vec{r}_1, \vec{r}_2$ 在同一区块，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 不独立。
+- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 在不同区块中，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 互相独立。
+- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 在同一区块中，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 不独立。
+
+虽然这种关系很复杂，但通过常识可以猜测 $E\left\{\phi\left(\vec{r}\right)\right\}$ 的表达式应该是比较均匀且通俗易懂的，并不影响简单计算。
