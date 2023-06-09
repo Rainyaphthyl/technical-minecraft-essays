@@ -76,7 +76,7 @@ $$
 
 $$
 \begin{equation}
-g\left(\vec{\rho}\right)
+a\left(\vec{\rho}\right)
 = \frac{\left(\lambda - \left|x\right|\right)
 \left(\lambda - \left|z\right|\right)}{\lambda ^4}
 = \frac{\left(6 - \left|x\right|\right)
@@ -87,7 +87,7 @@ $$
 
 $$
 \begin{equation}
-g\left(\vec{\rho}\right)
+a\left(\vec{\rho}\right)
 = \begin{cases}
 \frac{\left(\lambda - \left|x\right|\right)\left(\lambda - \left|z\right|\right)}{\lambda ^4} &, \vec{\rho}\in\delta _0
 \\ 0 &, \text{else}
@@ -100,8 +100,8 @@ $$
 P\left\{\eta\left[\vec{\rho}\right] = k\right\}
 = P\left\{\eta _{\left[\vec{r}, w, \vec{\rho}\right]} = k\right\}
 = \begin{cases}
-g\left(\vec{\rho}\right) &, k = 1
-\\ 1 - g\left(\vec{\rho}\right) &, k = 0
+a\left(\vec{\rho}\right) &, k = 1
+\\ 1 - a\left(\vec{\rho}\right) &, k = 0
 \\ 0 &, \text{else}
 \end{cases}
 \end{equation}
@@ -110,7 +110,7 @@ $$
 $$
 \begin{equation}
 E\left\{\eta\left[\vec{\rho}\right]\right\}
-= g\left(\vec{\rho}\right)
+= a\left(\vec{\rho}\right)
 \end{equation}
 $$
 
@@ -245,17 +245,49 @@ E\left\{\xi _{\left[\vec{r}, w\right]}\middle|\psi=c\right\}
 \\ u\left(\vec{r}\right) &, w = c
 \end{cases}
 \\&= \begin{cases}
-\sum_{\vec{\rho}\in\delta _0}{g\left(\vec{\rho}\right)\cdot E\left\{\xi _{\left[\vec{r}+\vec{\rho}, w+1\right]}\middle|\psi=c\right\}} &, 0 \leq w < c
+\sum_{\vec{\rho}\in\delta _0}{a\left(\vec{\rho}\right)\cdot E\left\{\xi _{\left[\vec{r}+\vec{\rho}, w+1\right]}\middle|\psi=c\right\}} &, 0 \leq w < c
 \\ u\left(\vec{r}\right) &, w = c
 \end{cases}
 \end{align*}
 \end{equation}
 $$
 
-简记为以下公式：
+## 第二次重构 / 第三次建构
+
+> 设置随机变量时，按照随机事件已经发生的情况进行考虑……
+
+$\psi _a\left(\vec{r}\right)$ ：位置 $\vec{r}$ 处开始的游走总次数，其中 $1 \leq g \leq 3$ ，表示一次刷怪循环中的3组刷怪尝试。
+
+$\phi \left(\vec{r}\right)$ ：位置 $\vec{r}$ 处成为刷怪尝试起点的次数，只能取0或1.
+
+不要试图考虑 $\psi$ 或 $\phi$ 的分布；这里只考虑数学期望。
+
+$\psi$ 与 $\phi$ 互相独立，实际应用的随机变量是 $\psi _g\left(\vec{r}\right)\cdot\phi\left(\vec{r}\right)$ 。
 
 $$
 \begin{equation}
-s\left(\vec{r}, w\right)=
+P\left\{\psi _g\left(\vec{r}\right) = k\right\}
+= \begin{cases}
+\frac{1}{\beta - \alpha + 1} &, \alpha \leq k \leq \beta
+\\ 0 &, \text{else}
+\end{cases}
 \end{equation}
 $$
+
+$\psi _1, \psi _2, \psi _3$ 互相独立。
+
+$$
+\begin{equation}
+P\left\{\phi\left(\vec{r}\right) = k\right\}
+= \begin{cases}
+u\left(\vec{r}\right) &, k = 1
+\\ 1 - u\left(\vec{r}\right) &, k = 0
+\\ 0 &, \text{else}
+\end{cases}
+\end{equation}
+$$
+
+对于 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ ：
+- 如果 $\vec{r}_1 = \vec{r}_2$ ，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 是同一个随机变量。
+- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 不在同一区块，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 互相独立。
+- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，但 $\vec{r}_1, \vec{r}_2$ 在同一区块，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 不独立。
