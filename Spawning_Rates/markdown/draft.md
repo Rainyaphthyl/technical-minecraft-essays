@@ -288,8 +288,82 @@ u\left(\vec{r}\right) &, k = 1
 $$
 
 对于 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ ：
-- 如果 $\vec{r}_1 = \vec{r}_2$ ，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 是同一个随机变量。
-- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 在不同区块中，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 互相独立。
-- 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 在同一区块中，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 不独立。
+1. 如果 $\vec{r}_1 = \vec{r}_2$ ，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 是同一个随机变量。
+2. 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 在不同区块中，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 互相独立。
+3. 如果 $\vec{r}_1 \neq \vec{r}_2$ ，且 $\vec{r}_1, \vec{r}_2$ 在同一区块中，则 $\phi\left(\vec{r}_1\right), \phi\left(\vec{r}_2\right)$ 不独立。
 
 虽然这种关系很复杂，但通过常识可以猜测 $E\left\{\phi\left(\vec{r}\right)\right\}$ 的表达式应该是比较均匀且通俗易懂的，并不影响简单计算。
+
+对于上述第2种情况：
+
+$$
+\begin{equation}
+\begin{align*}
+& P\left\{\left(\phi\left(\vec{r}_1\right)=k_1\right)\cap\left(\phi\left(\vec{r}_2\right)=k_2\right)\right\}
+\\ =& \begin{cases}
+u\left(\vec{r}_1\right) &, k_1=1\wedge k_2=0
+\\ u\left(\vec{r}_2\right) &, k_1=0\wedge k_2=1
+\\ 1-u\left(\vec{r}_1\right)-u\left(\vec{r}_2\right) &, k_1=0\wedge k_2=0
+\\ 0 &, \text{else}
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+& P\left\{\bigcap_{i=1}^{\left|C\left(\vec{r}_i\right)\right|}{\left(\phi\left(\vec{r}_i\right)=k_i\right)}\right\}
+\\ =& \begin{cases}
+u\left(\vec{r}_i\right) &, \left(k_i=1\right)\wedge\left(\bigwedge_{j\neq i}{\left(k_j=0\right)}\right)
+\\ \dots &, \dots
+\\ 1-\sum_{i}{u\left(\vec{r}_i\right)} &, \bigwedge_{i}{\left(k_i=0\right)}
+\\ 0 &, \text{else}
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+对于任何情况：
+
+$$
+\begin{equation}
+E\left\{\phi\left(\vec{r}\right)\right\}=u\left(\vec{r}\right)
+\end{equation}
+$$
+
+考虑 $\xi$ 的递推关系：
+
+$$
+\begin{equation}
+\begin{align*}
+\zeta _g\left(\vec{r}, c\right)
+=& \begin{cases}
+1 &, \psi _g\left(\vec{r}\right) = c
+\\ 0 &, \psi _g\left(\vec{r}\right) \neq c
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+\xi\left(\vec{r}, w\right)
+=& \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi\left(\vec{r}-\vec{\rho}, w+1\right)}{\eta _i\left(\vec{\rho}\right)}} &, 0 \leq w < \alpha
+\\ I\left(\vec{r}, w\right) + J\left(\vec{r}, w\right) &, \alpha \leq w < \beta
+\\ \phi\left(\vec{r}\right)\cdot\sum_{g=1}^{3}{\zeta _g\left(\vec{r}, w\right)} &, w = \beta
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{cases}
+I\left(\vec{r}, w\right) = \sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi\left(\vec{r}-\vec{\rho}, w+1\right)}{\eta _i\left(\vec{\rho}\right)}}
+\\ J\left(\vec{r}, w\right) = \phi\left(\vec{r}\right)\cdot\sum_{g=1}^{3}{\zeta _g\left(\vec{r}, w\right)}
+\end{cases}
+\end{equation}
+$$
