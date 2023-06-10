@@ -336,13 +336,11 @@ $$
 
 $$
 \begin{equation}
-\begin{align*}
 \zeta _g\left(\vec{r}, c\right)
-=& \begin{cases}
+= \begin{cases}
 1 &, \psi _g\left(\vec{r}\right) = c
 \\ 0 &, \psi _g\left(\vec{r}\right) \neq c
 \end{cases}
-\end{align*}
 \end{equation}
 $$
 
@@ -352,7 +350,7 @@ $$
 \xi\left(\vec{r}, w\right)
 =& \begin{cases}
 \sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi\left(\vec{r}-\vec{\rho}, w+1\right)}{\eta _i\left(\vec{\rho}\right)}} &, 0 \leq w < \alpha
-\\ I\left(\vec{r}, w\right) + J\left(\vec{r}, w\right) &, \alpha \leq w < \beta
+\\ \theta _I\left(\vec{r}, w\right) + \theta _J\left(\vec{r}, w\right) &, \alpha \leq w < \beta
 \\ \phi\left(\vec{r}\right)\cdot\sum_{g=1}^{3}{\zeta _g\left(\vec{r}, w\right)} &, w = \beta
 \end{cases}
 \end{align*}
@@ -362,8 +360,60 @@ $$
 $$
 \begin{equation}
 \begin{cases}
-I\left(\vec{r}, w\right) = \sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi\left(\vec{r}-\vec{\rho}, w+1\right)}{\eta _i\left(\vec{\rho}\right)}}
-\\ J\left(\vec{r}, w\right) = \phi\left(\vec{r}\right)\cdot\sum_{g=1}^{3}{\zeta _g\left(\vec{r}, w\right)}
+\theta _I\left(\vec{r}, w\right) = \sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi\left(\vec{r}-\vec{\rho}, w+1\right)}{\eta _i\left(\vec{\rho}\right)}}
+\\ \theta _J\left(\vec{r}, w\right) = \phi\left(\vec{r}\right)\cdot\sum_{g=1}^{3}{\zeta _g\left(\vec{r}, w\right)}
 \end{cases}
 \end{equation}
 $$
+
+考虑上述随机变量的期望：
+
+$$
+\begin{equation}
+\begin{align*}
+s\left(\vec{r}, w\right)
+=& \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{s\left(\vec{r}-\vec{\rho}, w+1\right)\cdot a\left(\vec{\rho}\right)} &, 0 \leq w < \alpha
+\\ I\left(\vec{r}, w\right) + J\left(\vec{r}, w\right) &, \alpha \leq w < \beta
+\\ u\left(\vec{r}\right)\cdot\frac{3}{\beta-\alpha+1} &, w = \beta
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+s\left(\vec{r}, w\right)
+=& \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{s\left(\vec{r}-\vec{\rho}, w+1\right)\cdot a\left(\vec{\rho}\right)} &, 0 \leq w < \alpha
+\\ \sum_{\vec{\rho}\in\delta _0}{s\left(\vec{r}-\vec{\rho}, w+1\right)\cdot a\left(\vec{\rho}\right)} + u\left(\vec{r}\right)\cdot\frac{3}{\beta-\alpha+1} &, \alpha \leq w < \beta
+\\ u\left(\vec{r}\right)\cdot\frac{3}{\beta-\alpha+1} &, w = \beta
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+I\left(\vec{r}, w\right)
+&= \sum_{\vec{\rho}\in\delta _0}{E\left\{\xi\left(\vec{r}-\vec{\rho}, w+1\right)\right\}\cdot E\left\{\eta\left(\vec{\rho}\right)\right\}}
+\\ &= \sum_{\vec{\rho}\in\delta _0}{s\left(\vec{r}-\vec{\rho}, w+1\right)\cdot a\left(\vec{\rho}\right)}
+\end{align*}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+J\left(\vec{r}, w\right)
+&= E\left\{\phi\left(\vec{r}\right)\right\}\cdot\sum_{g=1}^{3}{E\left\{\zeta _g\left(\vec{r}, w\right)\right\}}
+\\ &= u\left(\vec{r}\right)\cdot\frac{3}{\beta-\alpha+1}
+\\ &= \frac{3\cdot u\left(\vec{r}\right)}{\beta-\alpha+1}
+\\ & \left(\alpha \leq w \leq \beta\right)
+\end{align*}
+\end{equation}
+$$
+
+以上公式适用于不考虑生物种类随机性的情况。
