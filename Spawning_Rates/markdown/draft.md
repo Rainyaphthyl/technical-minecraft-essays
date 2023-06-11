@@ -420,12 +420,79 @@ $$
 
 ## 按总游走次数和生物种类分项
 
-对随机变量数组 $\left\{\xi\right\}$ 进一步细分，记为 $\xi\left(\vec{r}, w, c, m\right)$ ，各参数分别描述：
+对随机变量数组 $\left\{\xi\right\}$ 进一步细分，记为 $\xi _m\left(\vec{r}, w, c\right)$ ，各参数分别描述：
+- $m$ ：所在游走序列的生物种类（由第1次游走的终点决定）;
 - $\vec{r}$ ：事件发生的位置；
 - $w$ ：剩余游走次数；
 - $c$ ：所在游走序列的总游走次数；
-- $m$ ：所在游走序列的生物种类（由第1次游走的终点决定）。
 
-将事件序列分为生物种类决定前后的两段，分别考虑递推公式。
+此时， $\alpha, \beta$ 是与 $m$ 有关的参数，记作 $\alpha _m, \beta _m$ 。考虑到这两个参数的具体确认方式（实际上在1.12.2中未实现，但理论上和1.13+中存在）， $m$ 的实际含义并不是生物种类，而是生物生成列表的条目（`SpawnListEntry`）。
 
-（WIP）
+将事件序列分为生物种类决定前后的两段，分别考虑递推公式。生物种类的选取发生在 $w = c - 1$ 对应的事件中。
+
+在1.13+中，生物种类的选取伴随着最小、最大游走次数 $\alpha, \beta$ 的重新选取；但在1.9~1.12.2中， $\alpha, \beta$ 仅在刷怪尝试开始的时候选取一次。这两种选取对应的事件序号是不同的，以下讨论主要针对 1.12.2。
+
+与生物种类无关的游走次数边界值记作 $\alpha = 1, \beta = 4$ 。
+
+$$
+\begin{equation}\xi _m\left(\vec{r}, 0\right)
+= \sum _{c = \alpha _m}^{\beta _m}{\xi _m\left(\vec{r}, 0, c\right)}
+\end{equation}
+$$
+
+对于1.13+，需要将 $\zeta \left(\vec{r}, w\right)$ 的定义扩展到与 `SpawnListEntry` 有关的形式： $\zeta \left(\vec{r}, w, m\right)$ 。
+
+此处忽略上述扩展，直接按照1.12.2的情况考虑：
+
+$$
+\begin{equation}
+\begin{align*}
+& \xi _m\left(\vec{r}, w, c\right)
+\\ =& \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi _m\left(\vec{r}-\vec{\rho}, w+1, c\right)}{\eta _i\left(\vec{\rho}\right)}} &, 0 \leq w \leq c - 2
+\\ \sum_{\vec{\rho}\in\delta _0}{\sum _{i=1}^{\xi\left(\vec{r}-\vec{\rho}, c, c\right)}{\eta _i\left(\vec{\rho}\right)\cdot\chi _i\left(\vec{r}, m\right)}} &, w = c - 1
+\\ \phi\left(\vec{r}\right)\cdot\sum_{g=1}^{3}{\zeta _g\left(\vec{r}, c\right)} &, w = c
+\end{cases}
+\end{align*}
+\end{equation}
+$$
+
+随机变量 $M\left(\vec{r}\right)$ 表示选到的 `SpawnListEntry` ， $\chi \left(\vec{r}, m\right)$ 表示在 $\vec{r}$ 处选到 $m$ 的次数。 $P\left\{M\left(\vec{r}\right) = m\right\}$ 由生物群系和某些结构的信息决定，与各个 `SpawnEntryList` 的权重有关。
+
+$$
+\begin{equation}
+\chi\left(\vec{r}, m\right)
+= \begin{cases}
+1 &, m = M\left(\vec{r}\right)
+\\ 0 &, m \neq M\left(\vec{r}\right)
+\end{cases}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+b_m\left(\vec{r}\right) = E\left\{\chi\left(\vec{r}, m\right)\right\} = P\left\{M\left(\vec{r}\right) = m\right\}
+\end{equation}
+$$
+
+转化为数学期望的关系：
+
+$$
+\begin{equation}
+s_m\left(\vec{r}\right) = E\left\{\xi _m\left(\vec{r}, 0\right)\right\} = \sum _{c = \alpha}^{\beta}{E\left\{\xi _m\left(\vec{r}, 0, c\right)\right\}}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{align*}
+& s_m\left(\vec{r}, w, c\right) = E\left\{\xi _m\left(\vec{r}, w, c\right)\right\}
+\\ &= \begin{cases}
+\sum_{\vec{\rho}\in\delta _0}{s_m\left(\vec{r}-\vec{\rho}, w+1, c\right)\cdot a\left(\vec{\rho}\right)} &, 0 \leq w \leq c - 2
+\\ \sum_{\vec{\rho}\in\delta _0}{s\left(\vec{r}-\vec{\rho}, c, c\right)\cdot a\left(\vec{\rho}\right)\cdot b_m\left(\vec{r}\right)} &, w = c - 1
+\\ u\left(\vec{r}\right)\cdot \frac{3}{\beta-\alpha+1} &, w = c
+\end{cases}
+\\ & \left(1 = \alpha \leq c \leq \beta = 4\right)
+\end{align*}
+\end{equation}
+$$
