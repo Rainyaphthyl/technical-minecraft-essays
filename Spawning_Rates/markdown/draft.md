@@ -171,9 +171,7 @@ $$
 \begin{equation}
 h\left(\vec{r}\right)
 = L \cdot \left\lceil\frac{1}{L}
-\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
-y_m\left(\vec{\omega}\right)
-\right\rbrace + 2\right)\right\rceil
+\left(y_m\left(\vec{\omega}\right) + 2\right)\right\rceil
 \end{equation}
 $$
 
@@ -202,15 +200,11 @@ $$
 
 $$
 \begin{equation}
-\begin{align*}
 E\left\{\xi\left[\vec{r}, c\right]\middle|\psi=c\right\}
-&= u\left(\vec{r}\right)
-\\&= \left(L^3
+= u\left(\vec{r}\right)
+= \left(L^3
 \left\lceil\frac{1}{L}
-\left(\max_{\vec{\omega}\in C\left(\vec{r}\right)}\left\lbrace
-y_m\left(\vec{\omega}\right)
-\right\rbrace + 2\right)\right\rceil\right)^{-1}
-\end{align*}
+\left(y_m\left(\vec{\omega}\right) + 2\right)\right\rceil\right)^{-1}
 \end{equation}
 $$
 
