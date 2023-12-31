@@ -202,7 +202,18 @@ $$
 
 从 $t = -\alpha T -\beta$ 到 $t = -\alpha T$ ：如果 $\beta \le T - T_\mu$ ，则仅包含 $0$ 阶段；如果 $\beta > T - T_\mu$ ，则又包含了 $\left(\beta + T_\mu - T\right)$ 长度的 $w$ 阶段。
 
-因此，从 $t = -\tau$ 到 $t = T_\mu$ 经历的 $w$ 阶段时长是 $\left(\alpha+1\right) T_\mu + \left(\beta + T_\mu - T\right) = \left(\alpha+2\right) T_\mu + \beta - T$ 。
+因此，从 $t = -\tau$ 到 $t = T_\mu$ 经历的 $w$ 阶段时长是：
+
+$$
+T_w = \begin{cases}
+  \left(\alpha+1\right) T_\mu & \text{ if: } \beta \le T - T_\mu \\
+  \left(\alpha+1\right) T_\mu + \left(\beta + T_\mu - T\right) & \text{ if: } \beta > T - T_\mu \\
+\end{cases}
+$$
+
+$$
+T_w = \left(\alpha+1\right) T_\mu + \max\left[0, \beta + T_\mu - T\right]
+$$
 
 $$
 \begin{cases}
@@ -211,40 +222,110 @@ $$
 \end{cases}
 $$
 
+$$
+T_w = \left(\left\lfloor\frac{\tau}{T}\right\rfloor+1\right) T_\mu + \max\left[0, \tau + T_\mu - T\left\lfloor\frac{\tau}{T}\right\rfloor - T\right]
+$$
+
+$$
+T_w = \begin{cases}
+  \left(\alpha+1\right) T_\mu & \text{ if: }
+  T_\mu \le \left(\alpha+1\right)T - \tau \\
+  \left(\alpha+2\right) T_\mu + \tau - \left(\alpha+1\right) T & \text{ if: }
+  T_\mu > \left(\alpha+1\right)T - \tau \\
+\end{cases}
+$$
+
 代入求解 $T_\mu$ 所需的关系，可得：
 
 $$
-M = m\left[T_\mu\right] = \int_{-\tau}^{T_\mu}{v\left[t\right]\cdot{\mathrm{d}t}}
-\\= w\left(\left(\alpha+2\right) T_\mu + \beta - T\right)
-\\= w\left(\left(\alpha+2\right) T_\mu + \tau - \left(\alpha+1\right) T\right)
-\\= w\left(\tau + \left(\left\lfloor\dfrac{\tau}{T}\right\rfloor+2\right) T_\mu - \left(\left\lfloor\dfrac{\tau}{T}\right\rfloor+1\right) T\right)
+M = m\left[T_\mu\right] = \int_{-\tau}^{T_\mu}{v\left[t\right]\cdot{\mathrm{d}t}} = w T_w
 $$
 
 $$
-T_\mu = \frac{\frac{M}{w}-\tau+\left(\alpha+1\right) T}{\alpha+2}
-= \frac{\frac{M}{w}-\tau+\left(\alpha+2\right) T - T}{\alpha+2}
-\\= T - \frac{\tau + T - \frac{M}{w}}{\alpha+2}
+T_\mu = \begin{cases}
+  \dfrac{M}{w\left(\alpha+1\right)} & \text{ if: }
+  M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
+  \dfrac{M+w\left(T-\beta\right)}{w\left(\alpha+2\right)} & \text{ if: }
+  M > w\left(\alpha+1\right)\left(T-\beta\right) \\
+\end{cases}
 $$
 
+或完全用 $\alpha$ 表示为：
+
 $$
-T_\mu= T - \frac{\tau + T - \dfrac{M}{w}}{\left\lfloor\dfrac{\tau}{T}\right\rfloor+2}
+T_\mu = \begin{cases}
+  \dfrac{M}{w\left(\alpha+1\right)} & \text{ if: }
+  M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
+  T + \dfrac{\frac{M}{w}-\left(T+\tau\right)}{\alpha+2} & \text{ if: }
+  M > w\left(\alpha+1\right)\left(T-\beta\right) \\
+\end{cases}
 $$
 
----
-
-(草稿)
-
-由此可以考虑 $v\left[t\right]$ 的表达式：
+此关系成立的条件是 $w\left(T+\tau\right) > M$ 。
 
 因此，在有可能达到上限的情况下，存活生物量的完整规律应为：
 
+$$
+m\left[t\right] = \begin{cases}
+  w\left(\alpha T_\mu + t - \kappa T\right) & \text{ if: }
+  \left(\kappa T \le t <\kappa T + T_\mu\right) \wedge \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\  w\left(\left(\alpha+1\right)\left(T_\mu-T\right)+\tau + t - \kappa T\right) & \text{ if: }
+  \left(\kappa T \le t <\kappa T + T_\mu\right) \wedge \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M & \text{ if: }
+  \kappa T + T_\mu \le t < \kappa T + T \\
+\end{cases}
+$$
+
+即：
+
+$$
+m\left[t\right] = \begin{cases}
+  \frac{\alpha M}{\alpha+1} + w\left(t - \kappa T\right) & \text{ if: }
+  \left(\kappa T \le t <\kappa T + T_\mu\right) \wedge \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+
+  \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} + \frac{w\tau}{\alpha+2} + w\left(t - \kappa T\right) & \text{ if: }
+  \left(\kappa T \le t <\kappa T + T_\mu\right) \wedge \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+
+  M & \text{ if: }
+  \kappa T + T_\mu \le t < \kappa T + T \\
+\end{cases}
+$$
 
 一般情况下， $m\left[t\right]$ 在 $t = nT \left(n\in\mathbb{Z}\right)$ 处右侧连续而左侧不连续，这反映了生物集中处死的特点。
 
-综合考虑各种情况，可以推导出刷怪塔产出的效率，即每个周期内有效处死的生物量：
+综合考虑各种情况，可以推导出刷怪塔产出的平均效率，即每个周期内有效处死的生物量：
 
 $$
 W
 = \frac{1}{T}\left(m\left[0^-\right] - m\left[0^+\right]\right)
 = \frac{1}{T}\left(\lim_{t\to 0^-}{m\left[t\right]} - m\left[0\right]\right)
+$$
+
+$$
+m\left[0\right] = \begin{cases}
+  \frac{\alpha M}{\alpha+1} & \text{ if: }
+  \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+
+  \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} + \frac{w\tau}{\alpha+2} & \text{ if: }
+  \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+\end{cases}
+$$
+
+$$
+W = \begin{cases}
+  \frac{1}{T}\left(M - \frac{\alpha M}{\alpha+1}\right) & \text{ if: }
+  \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+
+  \frac{1}{T}\left(M - \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} + \frac{w\tau}{\alpha+2}\right) & \text{ if: }
+  \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+\end{cases}
+$$
+
+$$
+W = \begin{cases}
+  \dfrac{M}{T\left(\alpha+1\right)} & \text{ if: }
+  \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+
+  \dfrac{\left(\alpha+1\right)w}{\alpha+2} + \dfrac{M + w\tau}{T\left(\alpha+2\right)} & \text{ if: }
+  \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+\end{cases}
 $$
