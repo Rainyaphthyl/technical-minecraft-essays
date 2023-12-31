@@ -117,11 +117,23 @@ $$
 k\left[t\right] \le g\left[t\right]
 $$
 
+$k, g$ 的值可以由 $t$ 导出：
+
+$$
+\kappa\left[t\right] = \left\lfloor\frac{t}{T}\right\rfloor; k\left[t\right] = \kappa\left[t\right]+1
+$$
+
+$$
+\gamma\left[t\right] = \left\lfloor\frac{t+\tau}{T}\right\rfloor; g\left[t\right] = \gamma\left[t\right]+1
+$$
+
+其中， $\kappa\left[t\right], \gamma\left[t\right]$ 分别表示上一个已完成的生成批次、处理批次的序号。
+
 仍然假设生物容量永远不会被填满，则存活生物量呈现以下规律：
 
 $$
-m\left[t\right] = \int_{\left(k\left[t\right]-1\right)T-\tau}^{t}
-{w\cdot{\mathrm{d}t}} = w\cdot(t-\left(k\left[t\right]-1\right)T+\tau)
+m\left[t\right] = \int_{\kappa\left[t\right]\cdot T-\tau}^{t}
+{w\cdot{\mathrm{d}t}} = w\cdot(t-\kappa\left[t\right]\cdot T+\tau)
 $$
 
 存活生物量表示当前已经生成但尚未处理的生物量，即在上次处理时刻对应的生成时刻之后、当前时刻之前生成的所有生物。需要注意，这与当前时刻的生成批次并无直接关系，“当前处死批次对应的生成批次”并不是“当前生成批次”。
@@ -135,29 +147,104 @@ $$
 再考虑生物容量可能被填满的情况，存活生物量的规律应为：
 
 $$
-m\left[t\right] = \int_{\left(k\left[t\right]-1\right)T-\tau}^{t}
+m\left[t\right] = \int_{\kappa\left[t\right]\cdot T-\tau}^{t}
 {v\left[t\right]\cdot{\mathrm{d}t}}
 $$
 
-从 $t_0 = \left(k\left[t\right]-1\right)T-\tau$ 到 $t$ 之间应存在一个生物总量刚刚达到生物容量 $M$ 的时刻 $t_M$ ，满足以下关系：
+从上一次处死的时刻 $t' = \kappa\left[t\right]\cdot T$ 到下一次处死的时刻 $t' = k\left[t\right]\cdot T$ 之间应存在一个生物总量刚刚达到生物容量 $M$ 的时刻 $t' = \kappa\left[t\right]\cdot T + T_\mu$ ，其中 $T_\mu$ 是从处死到填满的时间差。这时填满的生物都是在上一次处死对应的生成批次中生成的，即在时刻 $t' = \kappa\left[t\right]\cdot T - \tau$ 之后生成，应满足以下关系：
 
 $$
-m\left[t\right]
-= \int_{t_0}^{t_M}{v\left[t\right]\cdot{\mathrm{d}t}}
-= \int_{t_0}^{t_M}{w\cdot{\mathrm{d}t}}=M
+m\left[\kappa T + T_\mu\right]
+= \int_{\kappa T - \tau}^{\kappa T + T_\mu}{v\left[t'\right]\cdot{\mathrm{d}t'}}
+= M
 $$
 
-即：
+为求解 $T_\mu$ ，需要先考虑 $v\left[t\right]$ 的变化情况：
+
+- 在处死之后、填满之前，取值为 $w$ ；
+- 在填满之后、处死之前，取值为 $0$ 。
+
+具体表示如下：
 
 $$
-t_M =\frac{M}{w}+t_0 =\frac{M}{w}+\left(k-1\right)T-\tau
-$$
-
-因此，存活生物量的完整规律应为：
-
-$$
-m\left[t\right] = \begin{cases}
-  w\cdot(t-\left(k\left[t\right]-1\right)T+\tau) & \text{ if: } \left(\left(k\left[t\right]-1\right)T-\tau\right) \le t < \left(\left(k\left[t\right]-1\right)T-\tau+\dfrac{M}{w}\right) \\
-  M & \text{ if: } \left(\left(k\left[t\right]-1\right)T-\tau+\dfrac{M}{w}\right) \le t < \left(k\left[t\right]\cdot T-\tau\right) \\
+v\left[t\right] = \begin{cases}
+  w & \text{ if: } 
+  \left(\kappa\left[t\right]\cdot T\right) 
+  \le t < 
+  \left(\kappa\left[t\right]\cdot T+ T_\mu\right) \\
+  0 & \text{ if: } 
+  \left(\kappa\left[t\right]\cdot T+ T_\mu\right) 
+  \le t < 
+  \left(k\left[t\right]\cdot T\right) \\
 \end{cases}
+$$
+
+不妨仅考虑 $0 \le t < T$ 的情况，此时 $\kappa = 0, k = 1$ ，
+
+$$
+v\left[t\right] = \begin{cases}
+  w & \text{ if: } 0 \le t < T_\mu \\
+  0 & \text{ if: } T_\mu \le t < T \\
+\end{cases}
+$$
+
+$$
+m\left[T_\mu\right]
+= \int_{-\tau}^{T_\mu}{v\left[t\right]\cdot{\mathrm{d}t}}
+= M
+$$
+
+从 $t = -\tau$ 到 $t = T_\mu$ ， $v\left[t\right]$ 可能经历若干次 $0$ 与 $w$ 之间的循环。
+
+令 $\tau = \alpha T + \beta \left(\alpha \in \mathbb{N} \wedge 0 \le \beta < T\right)$ ，即本征延迟 $\tau$ 包含了 $\alpha$ 余 $\beta$ 个运行周期 $T$ 。考虑从 $t = -\alpha T - \beta$ 到 $t = T_\mu$ 的过程。
+
+上述过程中，从 $t = 0$ 到 $t = T_\mu$ 是一个完整的 $w$ 阶段，从 $t = -\alpha T$ 到 $t = 0$ 恰好包含 $\alpha$ 个完整的运行周期，两者合计必然包含 $\left(\alpha+1\right)$ 个完整的 $w$ 阶段。
+
+从 $t = -\alpha T -\beta$ 到 $t = -\alpha T$ ：如果 $\beta \le T - T_\mu$ ，则仅包含 $0$ 阶段；如果 $\beta > T - T_\mu$ ，则又包含了 $\left(\beta + T_\mu - T\right)$ 长度的 $w$ 阶段。
+
+因此，从 $t = -\tau$ 到 $t = T_\mu$ 经历的 $w$ 阶段时长是 $\left(\alpha+1\right) T_\mu + \left(\beta + T_\mu - T\right) = \left(\alpha+2\right) T_\mu + \beta - T$ 。
+
+$$
+\begin{cases}
+  \alpha = \left\lfloor\dfrac{\tau}{T}\right\rfloor\\ 
+  \beta = \tau - \alpha T = \tau - T\left\lfloor\dfrac{\tau}{T}\right\rfloor\\
+\end{cases}
+$$
+
+代入求解 $T_\mu$ 所需的关系，可得：
+
+$$
+M = m\left[T_\mu\right] = \int_{-\tau}^{T_\mu}{v\left[t\right]\cdot{\mathrm{d}t}}
+\\= w\left(\left(\alpha+2\right) T_\mu + \beta - T\right)
+\\= w\left(\left(\alpha+2\right) T_\mu + \tau - \left(\alpha+1\right) T\right)
+\\= w\left(\tau + \left(\left\lfloor\dfrac{\tau}{T}\right\rfloor+2\right) T_\mu - \left(\left\lfloor\dfrac{\tau}{T}\right\rfloor+1\right) T\right)
+$$
+
+$$
+T_\mu = \frac{\frac{M}{w}-\tau+\left(\alpha+1\right) T}{\alpha+2}
+= \frac{\frac{M}{w}-\tau+\left(\alpha+2\right) T - T}{\alpha+2}
+\\= T - \frac{\tau + T - \frac{M}{w}}{\alpha+2}
+$$
+
+$$
+T_\mu= T - \frac{\tau + T - \dfrac{M}{w}}{\left\lfloor\dfrac{\tau}{T}\right\rfloor+2}
+$$
+
+---
+
+(草稿)
+
+由此可以考虑 $v\left[t\right]$ 的表达式：
+
+因此，在有可能达到上限的情况下，存活生物量的完整规律应为：
+
+
+一般情况下， $m\left[t\right]$ 在 $t = nT \left(n\in\mathbb{Z}\right)$ 处右侧连续而左侧不连续，这反映了生物集中处死的特点。
+
+综合考虑各种情况，可以推导出刷怪塔产出的效率，即每个周期内有效处死的生物量：
+
+$$
+W
+= \frac{1}{T}\left(m\left[0^-\right] - m\left[0^+\right]\right)
+= \frac{1}{T}\left(\lim_{t\to 0^-}{m\left[t\right]} - m\left[0\right]\right)
 $$
