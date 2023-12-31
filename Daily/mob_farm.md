@@ -438,8 +438,70 @@ W = \iint_{\Omega}{
   U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
 $$
 
-这与本段开头采用直觉直接得出的结论相同，初步验证了 $m\left[t\right]$ 表达式的正确性。
+这与本段开头采用直觉直接得出的结论相同，初步验证了 $m\left[t\right]$ 表达式的正确性。并且，这种情况其实与“单延迟、无上限”没有任何区别——在无上限的情况下，延迟对平均效率没有任何影响。
 
 ## 多延迟、有上限
 
+与单延迟的情况类似，要将无上限的情况扩展为有上限的情况，主要步骤是确定两个相邻处死时刻之间生物容量被填满的时刻，对填满前后分别计算生成速率和存活生物量，再根据处死时存活生物量的变化情况（左右极限之差）得到平均效率。
 
+与生成速率类似，考虑生成强度的变化情况：
+
+$$
+u\left[\vec{r}, t\right] = \begin{cases}
+  U\left[\vec{r}\right] & \text{ if: } 
+  T_\kappa \left[t\right]
+  \le t < 
+  T_\kappa \left[t\right] + T_\mu \\
+  0 & \text{ if: } 
+  T_\kappa \left[t\right] + T_\mu 
+  \le t < 
+  T_\kappa \left[t\right] + T \\
+\end{cases}
+$$
+
+$T_\mu$ 是从处死到填满所需的时间。在编号为 $0$ 的周期附近采样，定义如下：
+
+$$
+m\left[T_\mu\right]
+= \iint_{\Omega}{
+  \int_{-\tau\left[\vec{r}\right]}
+  ^{T_\mu}{u\left[\vec{r}, t\right] {\mathrm{d}t}}
+  \cdot{\mathrm{d}\Omega}}
+= M
+$$
+
+按照生物密度考虑，有以下关系：
+
+$$
+\rho\left[\vec{r},T_\mu\right]
+= \int_{-\tau\left[\vec{r}\right]}
+  ^{T_\mu}{u\left[\vec{r}, t\right] {\mathrm{d}t}}
+$$
+
+$$
+m\left[T_\mu\right]
+= \iint_{\Omega}{
+  \rho\left[\vec{r},T_\mu\right]
+  \cdot{\mathrm{d}\Omega}}
+= M
+$$
+
+从 $-\tau$ 到 $T_\mu$ ，相应的生成位置和生物需要经历若干个周期，与单延迟的情况类似；由于此处 $-\tau$ 与位置有关，所以不同位置对应的周期数量可能是不同的。
+
+将位置 $\vec{r}$ 处的存活生物密度积累需要经历的实际有效生成（生成强度为 $U\left[\vec{r}\right]$ ）时长记为 $T_w\left[\vec{r}\right]$ ，仿照单延迟的结论可以推出以下关系：
+
+$$
+T_w\left[\vec{r}\right] = \begin{cases}
+  \left(\alpha\left[\vec{r}\right]+1\right) T_\mu & \text{ if: }
+  T_\mu \le \left(\alpha\left[\vec{r}\right]+1\right)T - \tau\left[\vec{r}\right] \\
+  \left(\alpha\left[\vec{r}\right]+2\right) T_\mu + \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right) T & \text{ if: }
+  T_\mu > \left(\alpha\left[\vec{r}\right]+1\right)T - \tau\left[\vec{r}\right] \\
+\end{cases}
+$$
+
+$$
+\begin{cases}
+  \alpha\left[\vec{r}\right] = \left\lfloor\dfrac{\tau\left[\vec{r}\right]}{T}\right\rfloor\\ 
+  \beta\left[\vec{r}\right] = \tau\left[\vec{r}\right] - \alpha\left[\vec{r}\right]\cdot T = \tau\left[\vec{r}\right] - T\left\lfloor\dfrac{\tau\left[\vec{r}\right]}{T}\right\rfloor\\
+\end{cases}
+$$
