@@ -14,30 +14,30 @@ $$
 \tau = \tau\left[\vec{r}\right]
 $$
 
-假设生物容量无穷大或者生物数量未达到上限，则每个位置都有与之对应的生物自然生成速率。在单位面积下，称其为“生成强度”（ $u$ ）。暂时只考虑1种生物，有以下关系：
+假设生物容量无穷大或者生物数量未达到上限，则每个位置都有与之对应的生物自然生成速率。在单位面积下，称其为“生成强度”（ $U$ ）。暂时只考虑1种生物，有以下关系：
 
 $$
-u = u\left[\vec{r}\right]
+U = U\left[\vec{r}\right]
 $$
 
 将所有可能的生物生成位置的集合记为 $\Omega$ ，则刷怪塔在自然状态下（生物容量无穷大或者生物数量未达到上限）的总生成速率符合以下描述：
 
 $$
-w = \sum_{\vec{r}\in\Omega}{u\left[\vec{r}\right]\cdot 1}
+w = \sum_{\vec{r}\in\Omega}{U\left[\vec{r}\right]\cdot 1}
 $$
 
 如果考虑位置连续， $\Omega$ 是所有生成位置形成的连续空间，有以下描述：
 
 $$
-w = \int_{\Omega}{u\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
+w = \int_{\Omega}{U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
 $$
 
 以下将以连续空间假设为主，从而有利于借助量纲的关系来理解相关概念(?)。生成强度特指单位面积的生成速率，“生成速率”就默认指一定范围内的总生成速率，不用再加“总”字。
 
 名称 | 量纲 | 常用符号
 :-: | :-: | :-:
-生成强度 | $\dfrac{生物量}{时间\times 面积}$ | $u$
-生成速率 | $\dfrac{生物量}{时间}$ | $w$
+生成强度 | $\dfrac{生物量}{时间\times 面积}$ | $U, u$
+生成速率 | $\dfrac{生物量}{时间}$ | $w, v$
 本征延迟 | $时间$ | $\tau$
 
 在后续分析中，需要用到这样一个参数：本征延迟相同的一组生物的生成速率。在这之前要先定义“本征延迟相同的位置组成的空间” $\Omega\left[\tau _0\right]$ ：
@@ -49,19 +49,19 @@ $$
 “从本征延迟到生成速率的关系”定义如下：
 
 $$
-w\left[\tau\right] = \int_{\Omega\left[\tau\right]}{u\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
+w\left[\tau\right] = \int_{\Omega\left[\tau\right]}{U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
 $$
 
-## 单一延迟、无上限的模型
+## 单延迟、无上限
 
 此情况下，所有生物本征延迟相同（这在刷怪塔中已经不多见，反而常见于时钟式作物农场），刷怪塔一直处在自然生成状态。
 
-记刷怪塔全局统一的本征延迟为 $\tau$ ，运行周期为 $T$ ，生成空间为 $\Omega$ （其面积 $\int_{\Omega}{\mathrm{d}\Omega} = S$ ），自然生成强度为 $u\left[\vec{r}\right]$ （ $\vec{r}\in\Omega$ ， $u$ 不一定是常数）。
+记刷怪塔全局统一的本征延迟为 $\tau$ ，运行周期为 $T$ ，生成空间为 $\Omega$ （其面积 $\int_{\Omega}{\mathrm{d}\Omega} = S$ ），自然生成强度为 $U\left[\vec{r}\right]$ （ $\vec{r}\in\Omega$ ， $u$ 不一定是常数）。
 
 生成速率维持恒定值：
 
 $$
-w = \int_{\Omega}{u\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
+w = \int_{\Omega}{U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
 $$
 
 假设刷怪塔无始无终地运行，每当 $t = kT \left(k \in \mathbb{Z}\right)$ 的时刻进行一次处死。在一次处死中，能够处理到的生物的生成时刻应分布在以下区间：
@@ -82,7 +82,7 @@ $$
 
 显然，这一整段的推导都是废话，但并不是毫无营养的，而是为了演示相关概念，为更复杂的情况提供参考。
 
-## 单一延迟、有上限的模型
+## 单延迟、有上限
 
 与上述单一延迟模型类似，但此处引入了有限的生物容量。此时，生物生成就面临两种情况：生物总量小于容量时，按自然生成速率生成；生物总量等于容量时，不生成，速率为 $0$ 。由于模型中生物生成被简化成连续过程，因此不会出现生物总量大于容量的情况；或者说，可以在模型中将生物容量设定为已经考虑过实际离散情况下过度生成现象的值。
 
@@ -292,7 +292,7 @@ $$
 
 一般情况下， $m\left[t\right]$ 在 $t = nT \left(n\in\mathbb{Z}\right)$ 处右侧连续而左侧不连续，这反映了生物集中处死的特点。
 
-综合考虑各种情况，可以推导出刷怪塔产出的平均效率，即每个周期内有效处死的生物量：
+综合以上结论，可以推导出刷怪塔产出的平均效率，即每个周期内有效处死的生物量：
 
 $$
 W
@@ -303,29 +303,143 @@ $$
 $$
 m\left[0\right] = \begin{cases}
   \frac{\alpha M}{\alpha+1} & \text{ if: }
-  \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
 
   \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} + \frac{w\tau}{\alpha+2} & \text{ if: }
-  \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M > w\left(\alpha+1\right)\left(T-\beta\right) \\
 \end{cases}
 $$
 
 $$
 W = \begin{cases}
   \frac{1}{T}\left(M - \frac{\alpha M}{\alpha+1}\right) & \text{ if: }
-  \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
 
   \frac{1}{T}\left(M - \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} + \frac{w\tau}{\alpha+2}\right) & \text{ if: }
-  \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M > w\left(\alpha+1\right)\left(T-\beta\right) \\
 \end{cases}
 $$
 
 $$
 W = \begin{cases}
   \dfrac{M}{T\left(\alpha+1\right)} & \text{ if: }
-  \left(M \le w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
 
   \dfrac{\left(\alpha+1\right)w}{\alpha+2} + \dfrac{M + w\tau}{T\left(\alpha+2\right)} & \text{ if: }
-  \left(M > w\left(\alpha+1\right)\left(T-\beta\right)\right) \\
+  M > w\left(\alpha+1\right)\left(T-\beta\right) \\
 \end{cases}
 $$
+
+再考虑未达到上限的情况，综合表示为：
+
+$$
+W = \begin{cases}
+  w & \text{ if: }
+  \frac{M}{wT} > 1+\frac{\tau}{T} \\\\
+
+  \dfrac{M}{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+1\right)T} & \text{ if: }
+  \frac{M}{wT} \le \left(1+\left\lfloor\frac{\tau}{T}\right\rfloor\right)\left(1-\frac{\tau}{T} + \left\lfloor\frac{\tau}{T}\right\rfloor\right) \le 1+\frac{\tau}{T} \\\\
+
+  \dfrac{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+1\right)wT+M+w\tau}{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+2\right)T} & \text{ if: }
+  \left(1+\left\lfloor\frac{\tau}{T}\right\rfloor\right)\left(1-\frac{\tau}{T} + \left\lfloor\frac{\tau}{T}\right\rfloor\right) < \frac{M}{wT} \le 1+\frac{\tau}{T} \\
+\end{cases}
+$$
+
+## 多延迟、无上限
+
+此情况下，各个刷怪位置的本征延迟不一定相等；由于存活生物量一直小于容量，所以生物一直处于自然生成状态。如果不考虑生物容量，可以认为这种模型描述了需要人工处死的传送带时钟式刷怪塔的典型情况：传送带的运动需要时间，靠近传送带起点的位置本征延迟较大，靠近传送带终点的位置本征延迟较小。
+
+记刷怪塔全局统一的运行周期为 $T$ ，生成空间为 $\Omega$ （其面积 $\int_{\Omega}{\mathrm{d}\Omega} = S$ ），各个位置的自然生成强度为 $U\left[\vec{r}\right]$ （ $\vec{r}\in\Omega$ ），本征延迟为 $\tau\left[\vec{r}\right]$ 。
+
+由于一直处在自然生成状态，容易发现刷怪塔平均效率应为：
+
+$$
+W = \iint_{\Omega}{U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
+$$
+
+为了对有上限的情况进行铺垫，先在无上限的情况下考虑存活生物量的变化情况。
+
+和单延迟的情况类似，生物集中处死的时刻仍然为 $t = nT \left(n\in\mathbb{Z}\right)$ 。
+
+![多个生成周期与处死时刻的时间轴](00002.png)
+
+对于一个给定的本征延迟 $\tau _i$ ，给定时刻的存活生物量应当为：从上一次处死时刻对应的生成时刻开始，到当前时刻为止，这一时段生成的所有本征延迟为 $\tau _i$ 的生物量。将本征延迟在 $\Omega$ 内的各个位置的全部可能取值都按照面积和生成强度综合加权考虑，即可得到综合的存活生物量变化规律。
+
+以下段落中，默认以大写的 $U\left[\vec{r}\right]$ 表示自然生成强度，以小写的 $u\left[\vec{r}, t\right]$ 表示实际生成强度；这类似于 $w$ 与 $v\left[t\right]$ 的关系。
+
+对于无上限或永远不达到上限的情况， $\left(\forall t\in\mathbb{R}\right) u\left[\vec{r}, t\right] = U\left[\vec{r}\right]$ 。
+
+$$
+m\left[t\right] = \iint_{\Omega}{
+  \int_{\kappa\left[t\right]\cdot T - \tau\left[\vec{r}\right]}
+  ^{t}{u\left[\vec{r}, t'\right] {\mathrm{d}t'}}
+  \cdot{\mathrm{d}\Omega}}
+$$
+
+与“生物量”相对，上述积分式中 $\Omega$ 上的被积函数所描述的变量被定义为“生物密度”，其决定式（而非定义式）为：
+
+$$
+\rho\left[\vec{r}, t\right] = \int_{\kappa\left[t\right]\cdot T - \tau\left[\vec{r}\right]}
+  ^{t}{u\left[\vec{r}, t'\right] {\mathrm{d}t'}}
+$$
+
+按相应情况计算，得到：
+
+$$
+\rho\left[\vec{r}, t\right] = \int_{\kappa\left[t\right]\cdot T - \tau\left[\vec{r}\right]}
+  ^{t}{U\left[\vec{r}\right] {\mathrm{d}t}}
+= U\left[\vec{r}\right]\cdot\left(t - \kappa\left[t\right]\cdot T + \tau\left[\vec{r}\right]\right)
+$$
+
+$$
+m\left[t\right] = \iint_{\Omega}{
+  \rho\left[\vec{r}, t\right]
+  \cdot{\mathrm{d}\Omega}}
+= \left(t - \kappa\left[t\right]\cdot T\right)\iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
++ \iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot\tau\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+$$
+
+以上表达式提到了上文出现过的 $\kappa\left[t\right]$ ，表示“上一个处死时刻的序号”，因此仍然仅与时刻 $t$ 有关而与本征延迟 $\tau$ 无关。其计算方式不随延迟而改变，与上文相同：
+
+$$
+\kappa\left[t\right] = \left\lfloor\frac{t}{T}\right\rfloor
+$$
+
+同时定义一个更便于表达的量，直接表示“上一个处死时刻”：
+
+$$
+T_\kappa \left[t\right] = \kappa\left[t\right]\cdot T = \left\lfloor\frac{t}{T}\right\rfloor\cdot T
+$$
+
+根据存活生物量 $m\left[t\right]$ 的表达式，按照对集中处死过程的描述来重新推导刷怪塔的效率：
+
+$$
+W = \frac{1}{T}\left(m\left[0^-\right] - m\left[0^+\right]\right) = \frac{1}{T}\left(\lim_{t\to 0^-}{m\left[t\right]} - m\left[0\right]\right)
+$$
+
+$$
+W = \frac{1}{T}\left(
+   T\iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
+  + \iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot\tau\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+  - \iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot\tau\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+\right)
+$$
+
+$$
+W = \iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot{\mathrm{d}\Omega}}
+$$
+
+这与本段开头采用直觉直接得出的结论相同，初步验证了 $m\left[t\right]$ 表达式的正确性。
+
+## 多延迟、有上限
+
+
