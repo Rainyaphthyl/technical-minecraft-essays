@@ -43,7 +43,7 @@ $$
 在后续分析中，需要用到这样一个参数：本征延迟相同的一组生物的生成速率。在这之前要先定义“本征延迟相同的位置组成的空间” $\Omega\left[\tau _0\right]$ ：
 
 $$
-\Omega\left[\tau _0\right] = \left\{\vec{r}|\vec{r}\in\Omega \wedge \tau\left[\vec{r}\right] = \tau _0\right\}
+\Omega\left[\tau _0\right] = \left\{\vec{r}\mid\vec{r}\in\Omega \wedge \tau\left[\vec{r}\right] = \tau _0\right\}
 $$
 
 “从本征延迟到生成速率的关系”定义如下：
@@ -315,7 +315,7 @@ W = \begin{cases}
   \frac{1}{T}\left(M - \frac{\alpha M}{\alpha+1}\right) & \text{ if: }
   M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
 
-  \frac{1}{T}\left(M - \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} + \frac{w\tau}{\alpha+2}\right) & \text{ if: }
+  \frac{1}{T}\left(M - \frac{\left(\alpha+1\right)\left(M-wT\right)}{\alpha+2} - \frac{w\tau}{\alpha+2}\right) & \text{ if: }
   M > w\left(\alpha+1\right)\left(T-\beta\right) \\
 \end{cases}
 $$
@@ -325,7 +325,7 @@ W = \begin{cases}
   \dfrac{M}{T\left(\alpha+1\right)} & \text{ if: }
   M \le w\left(\alpha+1\right)\left(T-\beta\right) \\
 
-  \dfrac{\left(\alpha+1\right)w}{\alpha+2} + \dfrac{M + w\tau}{T\left(\alpha+2\right)} & \text{ if: }
+  \dfrac{\left(\alpha+1\right)w}{\alpha+2} + \dfrac{M - w\tau}{T\left(\alpha+2\right)} & \text{ if: }
   M > w\left(\alpha+1\right)\left(T-\beta\right) \\
 \end{cases}
 $$
@@ -340,7 +340,7 @@ W = \begin{cases}
   \dfrac{M}{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+1\right)T} & \text{ if: }
   \frac{M}{wT} \le \left(1+\left\lfloor\frac{\tau}{T}\right\rfloor\right)\left(1-\frac{\tau}{T} + \left\lfloor\frac{\tau}{T}\right\rfloor\right) \le 1+\frac{\tau}{T} \\\\
 
-  \dfrac{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+1\right)wT+M+w\tau}{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+2\right)T} & \text{ if: }
+  \dfrac{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+1\right)wT+M-w\tau}{\left(\left\lfloor\frac{\tau}{T}\right\rfloor+2\right)T} & \text{ if: }
   \left(1+\left\lfloor\frac{\tau}{T}\right\rfloor\right)\left(1-\frac{\tau}{T} + \left\lfloor\frac{\tau}{T}\right\rfloor\right) < \frac{M}{wT} \le 1+\frac{\tau}{T} \\
 \end{cases}
 $$
@@ -504,4 +504,111 @@ $$
   \alpha\left[\vec{r}\right] = \left\lfloor\dfrac{\tau\left[\vec{r}\right]}{T}\right\rfloor\\ 
   \beta\left[\vec{r}\right] = \tau\left[\vec{r}\right] - \alpha\left[\vec{r}\right]\cdot T = \tau\left[\vec{r}\right] - T\left\lfloor\dfrac{\tau\left[\vec{r}\right]}{T}\right\rfloor\\
 \end{cases}
+$$
+
+$$
+\rho\left[\vec{r},T_\mu\right]
+= \int_{-\tau\left[\vec{r}\right]}
+  ^{T_\mu}{u\left[\vec{r}, t\right] {\mathrm{d}t}}
+= U\left[\vec{r}\right]\cdot T_w\left[\vec{r}\right]
+$$
+
+$$
+m\left[T_\mu\right]
+= \iint_{\Omega}{
+  U\left[\vec{r}\right]\cdot T_w\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+= M
+$$
+
+注意到， $T_\mu$ 是与 $\vec{r}$ 无关的常量。
+
+按照 $T_w\left[\vec{r}\right]$ 的表达式，将 $\Omega$ 分为两部分：
+
+$$
+\begin{cases}
+  \Omega _1 = \Omega \cap \left\lbrace \vec{r} \mid T_\mu \le \left(\alpha\left[\vec{r}\right]+1\right)T - \tau\left[\vec{r}\right] \right\rbrace
+  \\ 
+  \Omega _2 = \Omega \cap \left\lbrace \vec{r} \mid T_\mu > \left(\alpha\left[\vec{r}\right]+1\right)T - \tau\left[\vec{r}\right] \right\rbrace
+  \\
+\end{cases}
+$$
+
+$$
+m\left[T_\mu\right]
+= \iint_{\Omega _1}{
+  U\left[\vec{r}\right]\cdot T_w\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _1}}
+  + \iint_{\Omega _2}{
+  U\left[\vec{r}\right]\cdot T_w\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
+$$
+
+$$
+m\left[T_\mu\right]
+= T_\mu \iint_{\Omega}{
+  \left(\alpha\left[\vec{r}\right]+1\right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+  + \iint_{\Omega _2}{\left(
+    T_\mu + \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right) T
+  \right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
+$$
+
+$$
+M
+= T_\mu \left(\iint_{\Omega}{
+  \left(\alpha\left[\vec{r}\right]+1\right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+  + \iint_{\Omega _2}{
+    U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
+  \right)
+  + \iint_{\Omega _2}{\left(
+    \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right) T
+  \right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
+$$
+
+$$
+T_\mu = \frac{
+    M - \iint_{\Omega _2}{\left(
+    \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right) T
+  \right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
+  }{
+    \iint_{\Omega}{
+    \left(\alpha\left[\vec{r}\right]+1\right)\cdot U\left[\vec{r}\right]
+    \cdot{\mathrm{d}\Omega}}
+    + \iint_{\Omega _2}{
+    U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
+  }
+$$
+
+由于 $T_\mu$ 的表达式比较复杂，此处不再进一步计算，而是将 $T_\mu$ 作为刷怪塔本身的全局参数，并由此给出生物量的变化规律：
+
+$$
+m\left[t\right] = \begin{cases}
+  m_A\left[t\right] + m_B\left[t\right] & \text{ if: }
+  T_\kappa \left[t\right] \le t <T_\kappa \left[t\right] + T_\mu \\
+  M & \text{ if: }
+  T_\kappa \left[t\right] + T_\mu \le t < T_\kappa \left[t\right] + T \\
+\end{cases}
+$$
+
+$$
+m_A\left[t\right] =
+  \iint_{\Omega}{\left(
+    \alpha\left[\vec{r}\right]\cdot T_\mu + t - T_\kappa \left[t\right]
+  \right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega}}
+$$
+
+$$
+m_B\left[t\right] =
+  \iint_{\Omega _2}{\left(
+    T_\mu + \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right)\cdot T
+  \right)\cdot U\left[\vec{r}\right]
+  \cdot{\mathrm{d}\Omega _2}}
 $$
