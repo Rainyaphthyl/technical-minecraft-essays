@@ -612,3 +612,264 @@ m_B\left[t\right] =
   \right)\cdot U\left[\vec{r}\right]
   \cdot{\mathrm{d}\Omega _2}}
 $$
+
+根据运行过程计算刷怪塔的效率：
+
+$$
+W = \frac{1}{T}\left(\lim_{t\to 0^-}{m\left[t\right]} - \lim_{t\to 0^+}{m\left[t\right]}\right) = \frac{1}{T}\left(M - m\left[0\right]\right)
+$$
+
+$$
+m\left[0\right] = T_\mu \iint_{\Omega}{
+  \alpha\left[\vec{r}\right]
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
+  + \iint_{\Omega _2}{\left(
+    T_\mu + \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right) T
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega _2}}
+$$
+
+$$
+W = \frac{M}{T}
+- \frac{T_\mu}{T}\iint_{\Omega}{
+  \alpha\left[\vec{r}\right]
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
++ \iint_{\Omega _2}{\left(
+    \alpha\left[\vec{r}\right]+1 
+    -\frac{T_\mu}{T} - \frac{\tau\left[\vec{r}\right]}{T}
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega _2}}
+$$
+
+上述结论的前提是生物容量存在填满的时刻，即：
+
+$$
+M_T = \iint_{\Omega}{
+  \int_{-\tau\left[\vec{r}\right]}^{T}{
+    u\left[\vec{r},t\right]
+    {\mathrm{d}t}
+  }
+\cdot{\mathrm{d}\Omega}} \ge M
+$$
+
+上式中的 $M_T$ 也可以作为刷怪塔本身的参数，用来判断是否存在占满生物容量的情况。可以采用比较粗略的计算方法：
+
+$$
+M_T = \iint_{\Omega}{
+    \left(T + \tau\left[\vec{r}\right]\right)
+    U\left[\vec{r}\right]
+{\mathrm{d}\Omega}}
+$$
+
+综合考虑达到和未达到上限的情况，平均效率如下：
+
+$$
+W = \begin{cases}
+  \iint_{\Omega}{U\left[\vec{r}\right]{\mathrm{d}\Omega}}
+  & \text{ if: }
+  M > M_T
+  \\
+  \frac{M}{T}
+- \frac{T_\mu}{T}\iint_{\Omega}{
+  \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
++ \iint_{\Omega _2}{\left(
+    \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor+1 
+    -\frac{T_\mu}{T} - \frac{\tau\left[\vec{r}\right]}{T}
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega _2}}
+  & \text{ if: }
+  M \le M_T
+\end{cases}
+$$
+
+下面借助边界条件来进行验证。当 $M_T = M$ ，即每次集中击杀之后刚好在下一次击杀时填满生物容量，根据定义显然也有 $T_\mu = T$ 。按上式的第二种情况计算平均效率：
+
+$$
+W = \frac{M}{T}
+- \frac{T}{T}\iint_{\Omega}{
+  \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
++ \iint_{\Omega _2}{\left(
+    \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor+1 
+    -\frac{T}{T} - \frac{\tau\left[\vec{r}\right]}{T}
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega _2}}
+$$
+
+$$
+W = \frac{M}{T}
+- \iint_{\Omega}{
+  \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
++ \iint_{\Omega _2}{\left(
+    \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor - \frac{\tau\left[\vec{r}\right]}{T}
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega _2}}
+$$
+
+关于 $W$ 表达式中的第二个积分，注意到以下事实：
+
+$$
+\Omega _2 = \Omega \cap \left\lbrace \vec{r} \mid T_\mu > \left(\alpha\left[\vec{r}\right]+1\right)T - \tau\left[\vec{r}\right] \right\rbrace
+$$
+
+$$
+\Omega _2 = \Omega \cap \left\lbrace \vec{r} \mid T > \left(\left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor+1\right)T - \tau\left[\vec{r}\right] \right\rbrace
+$$
+
+$$
+\Omega _2 = \Omega \cap \left\lbrace \vec{r} \mid \frac{\tau\left[\vec{r}\right]}{T} > \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor \right\rbrace
+$$
+
+$$
+\Omega _1 = \Omega \cap \left\lbrace \vec{r} \mid \frac{\tau\left[\vec{r}\right]}{T} \le \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor \right\rbrace
+= \Omega \cap \left\lbrace \vec{r} \mid \frac{\tau\left[\vec{r}\right]}{T} = \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor \right\rbrace
+$$
+
+同时注意到 $\Omega _2$ 上的积分有 $\left( \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor - \frac{\tau\left[\vec{r}\right]}{T} \right)$ 这个因子，其在 $\Omega _1$ 上恒等于 $0$ 。因此，将该积分直接扩展到 $\Omega = \Omega _1 \cup \Omega _2$ 上，其结果不变：
+
+$$
+W = \frac{M}{T}
+- \iint_{\Omega}{
+  \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
++ \iint_{\Omega}{\left(
+    \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor - \frac{\tau\left[\vec{r}\right]}{T}
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
+$$
+
+$$
+W = \frac{M}{T}
+- \iint_{\Omega}{
+    \frac{\tau\left[\vec{r}\right]}{T}
+    \cdot U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
+$$
+
+由于生物容量几乎处在未满状态，所以生成强度几乎恒定，有以下推论：
+
+$$
+M_T = \iint_{\Omega}{
+  \int_{-\tau\left[\vec{r}\right]}^{T}{
+    u\left[\vec{r},t\right]
+    {\mathrm{d}t}
+  }
+\cdot{\mathrm{d}\Omega}}
+= \iint_{\Omega}{
+    \left(T + \tau\left[\vec{r}\right]\right)
+    U\left[\vec{r}\right]
+{\mathrm{d}\Omega}}
+= M
+$$
+
+$$
+W = \iint_{\Omega}{
+    \left(1 + \frac{\tau\left[\vec{r}\right]}{T}\right)
+    U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
+  - \iint_{\Omega}{
+    \frac{\tau\left[\vec{r}\right]}{T}
+    \cdot U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
+$$
+
+$$
+W = \iint_{\Omega}{
+    U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
+$$
+
+由此确认，随着参数的变化， $W$ 在 $M_T = M$ 附近的变化是连续的，符合预期。
+
+## 刷怪强度均等的简化模型
+
+此模型是对“多延迟、有上限”模型的简化：将自然生成强度 $U\left[\vec{r}\right]$ 退化为与位置无关的参数 $U$ ；此时，刷怪塔整体的自然生成速率 $w$ 正比于生成强度和生成区的面积:
+
+$$
+w = \iint_{\Omega}{U\left[\vec{r}\right] {\mathrm{d}\Omega}}
+= \iint_{\Omega}{U{\mathrm{d}\Omega}} = US
+$$
+
+其中， $S$ 是生物生成区域的总面积：
+
+$$
+S = \iint_{\Omega}{\mathrm{d}\Omega}
+$$
+
+这个模型的设立是为了讨论一个比较接近实际应用的情况：增加刷怪塔的尺寸可以增加刷怪面积，从而可以增加自然生成速率；但同时也会增加传送带长度，进而增加“平均”延迟；刷怪塔尺寸恰好达到什么程度可以使刷怪塔产出效率达到最优？
+
+上文已经得到平均效率的表达式：
+
+$$
+W = \begin{cases}
+  \iint_{\Omega}{U\left[\vec{r}\right]{\mathrm{d}\Omega}}
+  & \text{ if: }
+  M > M_T
+  \\
+  \frac{M}{T}
+- \frac{T_\mu}{T}\iint_{\Omega}{
+  \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor
+   U\left[\vec{r}\right]
+  {\mathrm{d}\Omega}}
++ \iint_{\Omega _2}{\left(
+    \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor+1 
+    -\frac{T_\mu}{T} - \frac{\tau\left[\vec{r}\right]}{T}
+  \right) U\left[\vec{r}\right]
+  {\mathrm{d}\Omega _2}}
+  & \text{ if: }
+  M \le M_T
+\end{cases}
+$$
+
+根据“生成强度恒定”的假设对上式进行简化：
+
+$$
+W = \begin{cases}
+  US
+  & \text{ if: }
+  M > M_T
+  \\
+  \frac{M}{T}
+- \frac{U T_\mu}{T}\iint_{\Omega}{
+  \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor
+  {\mathrm{d}\Omega}}
++ U\iint_{\Omega _2}{\left(
+    \left\lfloor\frac{\tau\left[\vec{r}\right]}{T}\right\rfloor+1 
+    -\frac{T_\mu}{T} - \frac{\tau\left[\vec{r}\right]}{T}
+  \right)
+  {\mathrm{d}\Omega _2}}
+  & \text{ if: }
+  M \le M_T
+\end{cases}
+$$
+
+同时，对两个重要的中间参数也进行特化：
+
+$$
+T_\mu = \frac{
+    \frac{M}{U} - \iint_{\Omega _2}{\left(
+    \tau\left[\vec{r}\right] - \left(\alpha\left[\vec{r}\right]+1\right) T
+  \right)
+  {\mathrm{d}\Omega _2}}
+  }{
+    \iint_{\Omega}{
+    \left(\alpha\left[\vec{r}\right]+1\right)
+    {\mathrm{d}\Omega}}
+    + \iint_{\Omega _2}{
+  {\mathrm{d}\Omega _2}}
+  }
+$$
+
+$$
+M_T = U\left(ST + \iint_{\Omega}{
+  \tau\left[\vec{r}\right]\cdot
+{\mathrm{d}\Omega}}\right)
+$$
