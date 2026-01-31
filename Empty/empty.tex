@@ -1,0 +1,49 @@
+\documentclass[a4paper, UTF8, 11pt, twoside]{ctexart}
+\usepackage{amsmath, amsthm, amssymb, graphicx}
+\usepackage[bookmarks=true, colorlinks, citecolor=blue, linkcolor=black]{hyperref}
+\usepackage[left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm]{geometry}
+
+% 导言区
+
+\title{刷怪概率与速率的计算}
+\author{Naftalluvia}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \LaTeX
+\end{center}
+
+\section{引言}
+
+\subsection{游戏版本声明}
+
+在没有特殊说明的情况下，本文所有讨论内容均默认只考虑MCJE 1.12.2的情况，没有验证对于其他版本的适用性。即使是提到了版本差异的段落，对于其他版本的讨论内容也是未经验证的。
+
+本文的内容对其他版本仍然有参考意义，但引用时需要仔细甄别其中的各种版本差异。
+
+\section{单方块的刷怪效率计算}
+
+\subsection{参数设置}
+
+考虑以下与刷怪过程有关的随机变量：
+
+\begin{itemize}
+    \item $\vec{S}$ ：生物最终生成的位置；
+    \item $\vec{A}_k$ ：剩余 $k$ 次游走机会时，游走选中的位置；
+    \item $\vec{I}$ ：一组刷怪尝试中，游走的起点坐标；
+    \item $B$ ：一组刷怪尝试中，游走的次数；
+    \item $\xi$ ：一组刷怪尝试中，生物生成列表条目（`SpawnListEntry`），包含生物种类、成群生成数量范围、选择权重。
+\end{itemize}
+
+其中，
+\begin{itemize}
+    \item $\vec{S}, \vec{A}_k, \vec{I}$ 均为二元向量，表示生物生成位置的 $\left(X, Z\right)$ 方块坐标；
+    \item $B$ 的取值为正整数，具体范围与 $\xi$ 的取值有关；
+    \item $\vec{S}$ 可以视为 $\vec{A}_k$ 的特殊情况： $\vec{S} = \vec{A}_0$ ，即最后一次游走选中的位置即为实际生成位置；
+    \item $\vec{I}$ 并不能视为 $\vec{A}_k$ 的特殊情况，具体原因可见于下文。
+\end{itemize}
+
+\end{document}
